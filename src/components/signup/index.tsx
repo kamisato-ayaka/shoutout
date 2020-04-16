@@ -5,10 +5,11 @@ import * as Yup from 'yup'
 import { Formik } from 'formik'
 import md5 from 'md5';
 import { UserVars } from './types';
+import { AppState } from '../../redux/types';
 
 const SignUp = () => {
   const dispatch = useDispatch();
-  const userData: UserVars[] = useSelector((state: any) => state.signupReducer)
+  const userData: UserVars[] = useSelector((state: AppState) => state.signupReducer)
 
   const [invalid, setInvalid] = useState<boolean>(false)
 

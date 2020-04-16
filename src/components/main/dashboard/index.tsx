@@ -6,12 +6,13 @@ import Setting from '../setting';
 import { useSelector, useDispatch } from 'react-redux';
 import UserProfile from '../../user-profile';
 import { toUserProfile } from '../../../redux/actions';
+import { AppState } from '../../../redux/types';
 
 const Dashboard: React.FC<DashboardVars> = ({
   userName
 }) => {
   const dispatch = useDispatch()
-  const gotoUserProfile = useSelector((state: any) => state.toUserProfileReducer)
+  const gotoUserProfile = useSelector((state: AppState) => state.toUserProfileReducer)
 
   return (
     <>

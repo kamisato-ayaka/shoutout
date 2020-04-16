@@ -2,14 +2,15 @@ import React, { useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { PostVars, DashboardVars } from '../main/dashboard/types'
 import { UsernameVar, followUser, toUserProfile, getUser, likePost } from '../../redux/actions'
+import { AppState } from '../../redux/types'
 
 const UserProfile: React.FC<DashboardVars> = ({
   userName
 }) => {
   const dispatch = useDispatch()
-  const postList: PostVars[] = useSelector((state: any) => state.postReducer)
-  const user: UsernameVar = useSelector((state: any) => state.getUserReducer)
-  const likes: string[] = useSelector((state: any) => state.likePostReducer)
+  const postList: PostVars[] = useSelector((state: AppState) => state.postReducer)
+  const user: UsernameVar = useSelector((state: AppState) => state.getUserReducer)
+  const likes: string[] = useSelector((state: AppState) => state.likePostReducer)
 
   const findUser: PostVars[] = postList.filter((val: PostVars) => val.username === user)
 

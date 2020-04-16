@@ -8,13 +8,14 @@ import { LoginVars } from './types'
 import { UserVars } from '../signup/types'
 import SignUp from '../signup'
 import Dashboard from '../main/dashboard'
+import { AppState } from '../../redux/types'
 
 const Login = () => {
   const dispatch = useDispatch()
 
-  const togoSignup = useSelector((state: any) => state.toSignupReducer)
-  const togoLogin = useSelector((state: any) => state.toLoginReducer)
-  const userData: UserVars[] = useSelector((state: any) => state.signupReducer)
+  const togoSignup = useSelector((state: AppState) => state.toSignupReducer)
+  const togoLogin = useSelector((state: AppState) => state.toLoginReducer)
+  const userData: UserVars[] = useSelector((state: AppState) => state.signupReducer)
 
   const [userName, setUserName] = useState<any>()
 
