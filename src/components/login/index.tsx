@@ -18,7 +18,7 @@ const Login = () => {
   const userData: UserVars[] = useSelector((state: AppState) => state.signupReducer)
 
   const [userName, setUserName] = useState<any>()
-
+  const [invalid, setInvalid] = useState<boolean>(false)
   const initialValues: LoginVars | null = {
     username: '',
     password: '',
@@ -37,6 +37,7 @@ const Login = () => {
         setUserName(values.username)
         dispatch(toLogin())
       } else if (user === -1) {
+        setInvalid(true)
         resetForm()
       }
     }, 100);
@@ -94,6 +95,7 @@ const Login = () => {
                   )
                 }
               </Formik>
+              {!invalid ? '' : <p className="message">Account doesn't exist.</p>}
               <button onClick={() => dispatch(toSignup())}>Sign Up</button>
             </>
           }

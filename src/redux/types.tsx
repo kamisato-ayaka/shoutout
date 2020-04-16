@@ -10,6 +10,6 @@ export type AppState = {
     postReducer: PostVars[];
     toUserProfileReducer: boolean;
     getUserReducer: UsernameVar;
-    followUserReducer: FollowVars;
+    followUserReducer: FollowVars[];
     likePostReducer: string[];
   };
