@@ -13,13 +13,13 @@ const SignUp = () => {
 
   const [invalid, setInvalid] = useState<boolean>(false)
 
-  const initialValues: UserVars | null = {
+  const initialValues: Omit<UserVars,"followers"> | null = {
     username: '',
     password: '',
-    confirmpassword: ''
+    confirmpassword: '',
   }
 
-  const validationSchema: Yup.ObjectSchema<UserVars> = Yup.object().shape({
+  const validationSchema: Yup.ObjectSchema<Omit<UserVars,"followers">> = Yup.object().shape({
     username: Yup.string().required("Required"),
     password: Yup.string().required("Required")
       .min(8, 'Password is too short - should be 8 chars minimum.'),
@@ -29,14 +29,15 @@ const SignUp = () => {
         [Yup.ref("password")],
         "Please make sure your passwords match."
       )
-    })
+    }),
   })
 
   const onSubmit = (values: UserVars, { resetForm }: any) => {
     const newUser = {
       username: values.username,
       password: md5(values.password),
-      confirmpassword: md5(values.confirmpassword)
+      confirmpassword: md5(values.confirmpassword),
+      followers: values.followers
     }
 
     const index = userData.findIndex((val: UserVars) => val.username === values.username);

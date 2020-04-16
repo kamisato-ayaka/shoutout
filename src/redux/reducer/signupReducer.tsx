@@ -9,7 +9,20 @@ const reduce = (state: UserVars[] = initUser, action: any) => {
     case actionType.ADD_USER:
       console.log(state);
       return [...state, action.payload];
-      
+
+    case actionType.FOLLOW_USER:
+      type FollowVars = {
+        usernameFollowed: string
+        usernameToFollow: string
+      };
+      const val = action.payload as FollowVars
+      return state.filter((user) => {
+        if (user.username === val.usernameToFollow) {
+          user.followers = [...user.followers, val.usernameFollowed]
+        }
+        return true
+      })
+
     default:
       return state;
   }

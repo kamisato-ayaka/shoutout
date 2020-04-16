@@ -40,11 +40,11 @@ const UserProfile: React.FC<DashboardVars> = ({
   }, [dispatch, user, findUser, likes, userName])
 
   const follow = () => {
-    const newFollow = {
-      username: userName,
-      followuser: [user]
+    const followData = {
+      usernameFollowed: user,
+      usernameToFollow: userName
     }
-    dispatch(followUser(newFollow))
+    dispatch(followUser(followData))
   }
 
   return (

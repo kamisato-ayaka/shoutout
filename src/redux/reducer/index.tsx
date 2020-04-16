@@ -5,7 +5,6 @@ import toLoginReducer from './toLoginReducer'
 import postReducer from './postReducer'
 import toUserProfileReducer from './toUserProfileReducer'
 import getUserReducer from './getUserReducer'
-import followUserReducer from './followUserReducer'
 import likePostReducer from './likePostReducer'
 
 const reducer = combineReducers({
@@ -15,7 +14,6 @@ const reducer = combineReducers({
     postReducer,
     toUserProfileReducer,
     getUserReducer,
-    followUserReducer,
     likePostReducer
 })
 
