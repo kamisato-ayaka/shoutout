@@ -9,6 +9,11 @@ type FollowVars = {
     usernameOnline: string | ''
 };
 
+type LikeVars = {
+    postID: number
+    usernameLike: string | ''
+};
+
 export const toSignup = () => {
     return {
         type: actionType.TO_SIGNUP
@@ -68,7 +73,7 @@ export const followingUser = (followData: FollowVars) => {
     }
 }
 
-export const likePost = (user: string) => {
+export const likePost = (user: LikeVars) => {
     return {
         type: actionType.LIKE_POST,
         payload: user

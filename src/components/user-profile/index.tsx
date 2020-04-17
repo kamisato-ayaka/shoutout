@@ -11,7 +11,6 @@ const UserProfile = () => {
   const userName = useSelector((state: AppState) => state.logUserReducer)
   const postList: PostVars[] = useSelector((state: AppState) => state.postReducer)
   const user: UsernameVar = useSelector((state: AppState) => state.getUserReducer)
-  // const likes: string[] = useSelector((state: AppState) => state.likePostReducer)
   const users: UserVars[] = useSelector((state: AppState) => state.signupReducer)
 
   const findUser: PostVars[] = postList.filter((val: PostVars) => val.username === user)
@@ -37,17 +36,29 @@ const UserProfile = () => {
   }, [user, users, dispatch, userName])
 
   const userPost = useMemo(() => {
-    // const like = () => {
-    //   const userlike = likes.findIndex((val: string) => val === userName)
-    //   if (userlike === -1) {
-    //     dispatch(likePost(userName))
-    //   }
-    // }
+    const like = (post: PostVars) => {
+      const likeData = {
+        postID: post.id,
+        usernameLike: userName
+      }
+      dispatch(likePost(likeData))
+    }
 
-    const likes = postList.filter((val: PostVars) => val.likes)
+    const likesCount = (post: PostVars) => {
+      const likes = postList.filter((val: PostVars) => val.id === post.id)
+      if (!likes) return []
+      return (
+        <>
+          {likes.map((val: PostVars) => {
+            return (
+              <span key={val.id}>{val.likes.length}</span>
+            )
+          })}
+        </>
+      )
+    }
 
     return (
-
       <ul>
         {findUser.map((val: PostVars, index: any) =>
           <li key={index}>
@@ -56,13 +67,13 @@ const UserProfile = () => {
               dispatch(getUser(user))
             }}><b>{val.username}</b></div>
             <div>{val.post}</div>
+
             <div>
-              <button onClick={() => dispatch(likePost(userName))}>Like</button>
-              <span>{likes.length}</span>
+              <button onClick={() => like(val)}>Like</button>
+              {likesCount(val)}
             </div>
           </li>)}
       </ul>
-
     )
   }, [dispatch, user, findUser, userName, postList])
 

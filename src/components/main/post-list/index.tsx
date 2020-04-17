@@ -17,20 +17,19 @@ const PostList = () => {
   const postList: PostVars[] = useSelector((state: AppState) =>
     state.postReducer.filter(
       (post) =>
-        following.findIndex((user) => user.username === post.username ) > -1
+        following.findIndex((user) => user.username === post.username) > -1
     )
   );
-  // const likes: string[] = useSelector((state: AppState) => state.likePostReducer)
 
   const post = useMemo(() => {
-    // const like = () => {
-    //   const userlike = likes.findIndex((val: string) => val === userName)
-    //   if (userlike === -1) {
-    //     dispatch(likePost(userName))
-    //   }
-    // }
 
-    const likes = postList.filter((val:PostVars) => val.likes)
+    const like = (post: PostVars) => {
+      const likeData = {
+        postID: post.id,
+        usernameLike: userName
+      }
+      dispatch(likePost(likeData))
+    }
 
     return postList.map((val: PostVars, index: any) => {
       const user: UsernameVar = val.username
@@ -40,13 +39,28 @@ const PostList = () => {
         dispatch(getUser(user))
       }
 
+      const likesCount = (post: PostVars) => {
+        const likes = postList.filter((val: PostVars) => val.id === post.id)
+        if (!likes) return []
+        return (
+          <>
+            {likes.map((val: PostVars) => {
+              return (
+                <span key={val.id}>{val.likes.length}</span>
+              )
+            })}
+          </>
+        )
+      }
+
       return (
         <li key={index}>
           <div onClick={() => toProfile()}><b>{user}</b></div>
           <div>{val.post}</div>
+          
           <div>
-            <button onClick={() =>  dispatch(likePost(userName))}>Like</button>
-            <span>{likes.length}</span>
+            <button onClick={() => like(val)}>Like</button>
+            {likesCount(val)}
           </div>
         </li>
       )

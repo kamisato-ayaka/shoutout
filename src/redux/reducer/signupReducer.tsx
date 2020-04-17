@@ -2,7 +2,10 @@ import * as actionType from "../strings";
 import { UserVars } from "../../components/signup/types";
 
 const userData = localStorage.getItem("user");
-const initUser: UserVars[] = userData == null ? [] : JSON.parse(userData);
+const initUser: UserVars[] = userData == null ? [
+  {"username":"teffy","password":"3dbe00a167653a1aaee01d93e77e730e","confirmpassword":"3dbe00a167653a1aaee01d93e77e730e","following":["popo"],"followers":["popo"]},
+  {"username":"popo","password":"3dbe00a167653a1aaee01d93e77e730e","confirmpassword":"3dbe00a167653a1aaee01d93e77e730e","following":["teffy"],"followers":["teffy"]}
+] : JSON.parse(userData);
 
 type FollowVars = {
   usernameToFollow: string
