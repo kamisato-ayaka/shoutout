@@ -1,14 +1,15 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { addPost } from '../../../redux/actions'
 import { Formik } from 'formik'
-import { PostVars, DashboardVars } from '../dashboard/types'
+import { PostVars} from '../dashboard/types'
+import { AppState } from '../../../redux/types'
 
-const PostForm: React.FC<DashboardVars> = ({
-  userName
-}) => {
-
+const PostForm = () => {
   const dispatch = useDispatch();
+
+  const userName = useSelector((state: AppState) => state.logUserReducer)
+
   const initialValues: PostVars = {
     username: '',
     post: '',

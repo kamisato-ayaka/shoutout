@@ -1,14 +1,15 @@
 import React, { useMemo } from 'react'
-import { PostVars, DashboardVars } from '../dashboard/types'
+import { PostVars } from '../dashboard/types'
 import { useSelector, useDispatch } from 'react-redux'
 import { toUserProfile, getUser, UsernameVar, likePost } from '../../../redux/actions'
 import { AppState } from '../../../redux/types'
+import { UserVars } from '../../signup/types'
 
-const PostList: React.FC<DashboardVars> = ({
-  userName
-}) => {
-
+const PostList = () => {
   const dispatch = useDispatch()
+  
+  const userName = useSelector((state: AppState) => state.logUserReducer)
+  const users = useSelector((state:AppState) => state.signupReducer) 
   const postList: PostVars[] = useSelector((state: AppState) => state.postReducer)
   const likes: string[] = useSelector((state: AppState) => state.likePostReducer)
 
@@ -20,14 +21,26 @@ const PostList: React.FC<DashboardVars> = ({
       }
     }
 
+    const userFollowing = users.filter((user:UserVars) => user.username === userName).map((user: UserVars) => user.following)
+    
+    const followingPost = postList.map((val:PostVars) => val.username)
+
+    console.log(userFollowing);
+    console.log(followingPost);
+    
+
     return postList.map((val: PostVars, index: any) => {
       const user: UsernameVar = val.username
+
+      const toProfile = () => {
+        dispatch(toUserProfile())
+        dispatch(getUser(user))
+      }
+
+      
       return (
         <li key={index}>
-          <div onClick={() => {
-            dispatch(toUserProfile())
-            dispatch(getUser(user))
-          }}>{user}</div>
+          <div onClick={() => toProfile()}><b>{user}</b></div>
           <div>{val.post}</div>
           <div>
             <button onClick={() => like()}>Like</button>
@@ -36,7 +49,7 @@ const PostList: React.FC<DashboardVars> = ({
         </li>
       )
     })
-  }, [dispatch, postList, userName, likes])
+  }, [dispatch, postList, userName, likes, users])
 
   return (
     <ul>

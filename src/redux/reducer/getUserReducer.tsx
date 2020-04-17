@@ -1,10 +1,9 @@
 import * as actionType from "../strings";
 import { UsernameVar } from "../actions";
 
-const usernameData = localStorage.getItem("username");
-const initUsername: UsernameVar = usernameData == null ? '' : JSON.parse(usernameData);
+const initUsername: UsernameVar = ''
 
-const reduce = (state: UsernameVar = initUsername, action: any) => {
+const getUserReducer = (state: UsernameVar = initUsername, action: any) => {
   switch (action.type) {
     case actionType.GET_USER:
       return action.payload;
@@ -16,11 +15,5 @@ const reduce = (state: UsernameVar = initUsername, action: any) => {
       return state;
   }
 };
-
-const getUserReducer = (state: UsernameVar = initUsername, action: any) => {
-  const newState: UsernameVar = reduce(state, action);
-  localStorage.setItem("username", JSON.stringify(newState));
-  return newState;
-}
 
 export default getUserReducer;

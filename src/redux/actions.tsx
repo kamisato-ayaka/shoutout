@@ -2,7 +2,12 @@ import * as actionType from './strings'
 import { UserVars } from '../components/signup/types'
 import { PostVars } from '../components/main/dashboard/types'
 
-export type UsernameVar = string
+export type UsernameVar = string | ''
+
+type FollowVars = {
+    usernameToFollow: string
+    usernameOnline: string | ''
+};
 
 export const toSignup = () => {
     return {
@@ -13,6 +18,13 @@ export const toSignup = () => {
 export const toLogin = () => {
     return {
         type: actionType.TO_LOGIN
+    }
+}
+
+export const logUser = (user: string) => {
+    return {
+        type: actionType.LOG_USER,
+        payload: user
     }
 }
 
@@ -49,14 +61,9 @@ export const resetUser = () => {
     }
 }
 
-type FollowVars = {
-    usernameFollowed: string
-    usernameToFollow: string
-};
-
-export const followUser = (followData: FollowVars) => {
+export const followingUser = (followData: FollowVars) => {
     return {
-        type: actionType.FOLLOW_USER,
+        type: actionType.FOLLOWING_USER,
         payload: followData
     }
 }

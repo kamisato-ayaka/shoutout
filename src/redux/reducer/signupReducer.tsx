@@ -4,21 +4,25 @@ import { UserVars } from "../../components/signup/types";
 const userData = localStorage.getItem("user");
 const initUser: UserVars[] = userData == null ? [] : JSON.parse(userData);
 
+type FollowVars = {
+  usernameToFollow: string
+  usernameOnline: string | ''
+};
+
 const reduce = (state: UserVars[] = initUser, action: any) => {
+  const val = action.payload as FollowVars
+
   switch (action.type) {
     case actionType.ADD_USER:
-      console.log(state);
       return [...state, action.payload];
 
-    case actionType.FOLLOW_USER:
-      type FollowVars = {
-        usernameFollowed: string
-        usernameToFollow: string
-      };
-      const val = action.payload as FollowVars
+    case actionType.FOLLOWING_USER:
       return state.filter((user) => {
-        if (user.username === val.usernameToFollow) {
-          user.followers = [...user.followers, val.usernameFollowed]
+        if (user.username === val.usernameOnline) {
+          return user.following = [...user.following, val.usernameToFollow]
+
+        } else if (user.username === val.usernameToFollow) {
+          return user.followers = [...user.followers, val.usernameOnline]
         }
         return true
       })

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { toSignup, toLogin } from '../../redux/actions'
+import { toSignup, toLogin, logUser } from '../../redux/actions'
 import * as Yup from 'yup'
 import { Formik } from 'formik'
 import md5 from 'md5'
@@ -17,7 +17,6 @@ const Login = () => {
   const togoLogin = useSelector((state: AppState) => state.toLoginReducer)
   const userData: UserVars[] = useSelector((state: AppState) => state.signupReducer)
 
-  const [userName, setUserName] = useState<any>()
   const [invalid, setInvalid] = useState<boolean>(false)
   const initialValues: LoginVars | null = {
     username: '',
@@ -32,10 +31,12 @@ const Login = () => {
   const onSubmit = (values: LoginVars, { setSubmitting, resetForm }: any) => {
     setTimeout(() => {
       const user = userData.findIndex((val: UserVars) => val.username === values.username && val.password === md5(values.password))
+      let loguser = values.username
       if (user > -1) {
         setSubmitting(false);
-        setUserName(values.username)
+        dispatch(logUser(loguser))
         dispatch(toLogin())
+        
       } else if (user === -1) {
         setInvalid(true)
         resetForm()
@@ -43,10 +44,15 @@ const Login = () => {
     }, 100);
   }
 
+  const signUp = () => {
+    setInvalid(false)
+    dispatch(toSignup())
+  }
+
   return (
     <>
       {!togoLogin ?
-        <Dashboard userName={userName} /> :
+        <Dashboard /> :
         <>
           {togoSignup ?
             <SignUp /> :
@@ -96,7 +102,7 @@ const Login = () => {
                 }
               </Formik>
               {!invalid ? '' : <p className="message">Account doesn't exist.</p>}
-              <button onClick={() => dispatch(toSignup())}>Sign Up</button>
+              <button onClick={() => dispatch(signUp())}>Sign Up</button>
             </>
           }
         </>

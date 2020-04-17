@@ -13,13 +13,13 @@ const SignUp = () => {
 
   const [invalid, setInvalid] = useState<boolean>(false)
 
-  const initialValues: Omit<UserVars,"followers"> | null = {
+  const initialValues: Omit<UserVars,"following" | "followers"> | null = {
     username: '',
     password: '',
     confirmpassword: '',
   }
 
-  const validationSchema: Yup.ObjectSchema<Omit<UserVars,"followers">> = Yup.object().shape({
+  const validationSchema: Yup.ObjectSchema<Omit<UserVars,"following" | "followers">> = Yup.object().shape({
     username: Yup.string().required("Required"),
     password: Yup.string().required("Required")
       .min(8, 'Password is too short - should be 8 chars minimum.'),
@@ -32,11 +32,12 @@ const SignUp = () => {
     }),
   })
 
-  const onSubmit = (values: Omit<UserVars,"followers">, { resetForm }: any) => {
+  const onSubmit = (values: Omit<UserVars,"following" | "followers">, { resetForm }: any) => {
     const newUser = {
       username: values.username,
       password: md5(values.password),
       confirmpassword: md5(values.confirmpassword),
+      following: [],
       followers: []
     }
 
