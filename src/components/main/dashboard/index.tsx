@@ -4,7 +4,7 @@ import PostList from '../post-list';
 import Setting from '../setting';
 import { useSelector, useDispatch } from 'react-redux';
 import UserProfile from '../../user-profile';
-import { toUserProfile } from '../../../redux/actions';
+import { toUserProfile, getUser } from '../../../redux/actions';
 import { AppState } from '../../../redux/types';
 
 const Dashboard = () => {
@@ -13,10 +13,15 @@ const Dashboard = () => {
   const userName = useSelector((state: AppState) => state.logUserReducer)
   const gotoUserProfile = useSelector((state: AppState) => state.toUserProfileReducer)
 
+  const toProfile = () => {
+    dispatch(toUserProfile())
+    dispatch(getUser(userName))
+  }
+
   return (
     <>
-      <h1 onClick={() => { dispatch(toUserProfile()) }}>Shoutout</h1>
-      <p>Hi, {userName}</p>
+      <h1>Shoutout</h1>
+      <p onClick={() => toProfile()}>Hi, {userName}</p>
 
       {!gotoUserProfile ? <>
         <PostForm />
