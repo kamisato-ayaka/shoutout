@@ -102,7 +102,7 @@ const Login = () => {
                 }
               </Formik>
               {!invalid ? '' : <p className="message">Account doesn't exist.</p>}
-              <button onClick={() => dispatch(signUp())}>Sign Up</button>
+              <button onClick={() => signUp()}>Sign Up</button>
             </>
           }
         </>

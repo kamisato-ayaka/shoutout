@@ -3,14 +3,23 @@ import { PostVars } from '../dashboard/types'
 import { useSelector, useDispatch } from 'react-redux'
 import { toUserProfile, getUser, UsernameVar, likePost } from '../../../redux/actions'
 import { AppState } from '../../../redux/types'
-import { UserVars } from '../../signup/types'
 
 const PostList = () => {
   const dispatch = useDispatch()
-  
+
   const userName = useSelector((state: AppState) => state.logUserReducer)
-  const users = useSelector((state:AppState) => state.signupReducer) 
-  const postList: PostVars[] = useSelector((state: AppState) => state.postReducer)
+  const following = useSelector((state: AppState) =>
+    state.signupReducer.filter(
+      (value) =>
+        value.followers.findIndex((follower) => follower === userName) > -1
+    )
+  );
+  const postList: PostVars[] = useSelector((state: AppState) =>
+    state.postReducer.filter(
+      (post) =>
+        following.findIndex((user) => user.username === post.username) > -1
+    )
+  );
   const likes: string[] = useSelector((state: AppState) => state.likePostReducer)
 
   const post = useMemo(() => {
@@ -21,14 +30,6 @@ const PostList = () => {
       }
     }
 
-    const userFollowing = users.filter((user:UserVars) => user.username === userName).map((user: UserVars) => user.following)
-    
-    const followingPost = postList.map((val:PostVars) => val.username)
-
-    console.log(userFollowing);
-    console.log(followingPost);
-    
-
     return postList.map((val: PostVars, index: any) => {
       const user: UsernameVar = val.username
 
@@ -37,7 +38,6 @@ const PostList = () => {
         dispatch(getUser(user))
       }
 
-      
       return (
         <li key={index}>
           <div onClick={() => toProfile()}><b>{user}</b></div>
@@ -49,7 +49,7 @@ const PostList = () => {
         </li>
       )
     })
-  }, [dispatch, postList, userName, likes, users])
+  }, [dispatch, postList, userName, likes])
 
   return (
     <ul>
