@@ -7,7 +7,7 @@ import { UserVars } from '../signup/types'
 
 const UserProfile = () => {
   const dispatch = useDispatch()
-  
+
   const userName = useSelector((state: AppState) => state.logUserReducer)
   const postList: PostVars[] = useSelector((state: AppState) => state.postReducer)
   const user: UsernameVar = useSelector((state: AppState) => state.getUserReducer)
@@ -25,7 +25,8 @@ const UserProfile = () => {
       dispatch(followingUser(followData))
     }
 
-    const account = users.find((val:UserVars) => val.username === user)
+    const account = users.find((val: UserVars) => val.username === user)
+
     return (
       <>
         <h1>{user}</h1>
@@ -42,7 +43,9 @@ const UserProfile = () => {
         dispatch(likePost(userName))
       }
     }
+
     return (
+
       <ul>
         {findUser.map((val: PostVars, index: any) =>
           <li key={index}>
@@ -57,6 +60,7 @@ const UserProfile = () => {
             </div>
           </li>)}
       </ul>
+
     )
   }, [dispatch, user, findUser, likes, userName])
 

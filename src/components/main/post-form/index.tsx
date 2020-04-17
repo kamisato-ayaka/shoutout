@@ -2,7 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addPost } from '../../../redux/actions'
 import { Formik } from 'formik'
-import { PostVars} from '../dashboard/types'
+import { PostVars } from '../dashboard/types'
 import { AppState } from '../../../redux/types'
 
 const PostForm = () => {
@@ -48,8 +48,8 @@ const PostForm = () => {
                   {formik.touched.post && formik.errors.post ? (
                     <div>{formik.errors.post}</div>
                   ) : null}
+                  <button type="submit">Post</button>
                 </div>
-                <button type="submit">Post</button>
               </form>
             </>
           )
