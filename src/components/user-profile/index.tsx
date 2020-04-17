@@ -11,7 +11,7 @@ const UserProfile = () => {
   const userName = useSelector((state: AppState) => state.logUserReducer)
   const postList: PostVars[] = useSelector((state: AppState) => state.postReducer)
   const user: UsernameVar = useSelector((state: AppState) => state.getUserReducer)
-  const likes: string[] = useSelector((state: AppState) => state.likePostReducer)
+  // const likes: string[] = useSelector((state: AppState) => state.likePostReducer)
   const users: UserVars[] = useSelector((state: AppState) => state.signupReducer)
 
   const findUser: PostVars[] = postList.filter((val: PostVars) => val.username === user)
@@ -37,12 +37,14 @@ const UserProfile = () => {
   }, [user, users, dispatch, userName])
 
   const userPost = useMemo(() => {
-    const like = () => {
-      const userlike = likes.findIndex((val: string) => val === userName)
-      if (userlike === -1) {
-        dispatch(likePost(userName))
-      }
-    }
+    // const like = () => {
+    //   const userlike = likes.findIndex((val: string) => val === userName)
+    //   if (userlike === -1) {
+    //     dispatch(likePost(userName))
+    //   }
+    // }
+
+    const likes = postList.filter((val:PostVars) => val.likes)
 
     return (
 
@@ -55,14 +57,14 @@ const UserProfile = () => {
             }}><b>{val.username}</b></div>
             <div>{val.post}</div>
             <div>
-              <button onClick={() => like()}>Like</button>
+              <button onClick={() =>  dispatch(likePost(userName))}>Like</button>
               <span>{likes.length}</span>
             </div>
           </li>)}
       </ul>
 
     )
-  }, [dispatch, user, findUser, likes, userName])
+  }, [dispatch, user, findUser, userName, postList])
 
   return (
     <>

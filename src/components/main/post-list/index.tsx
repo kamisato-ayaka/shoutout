@@ -17,18 +17,20 @@ const PostList = () => {
   const postList: PostVars[] = useSelector((state: AppState) =>
     state.postReducer.filter(
       (post) =>
-        following.findIndex((user) => user.username === post.username) > -1
+        following.findIndex((user) => user.username === post.username ) > -1
     )
   );
-  const likes: string[] = useSelector((state: AppState) => state.likePostReducer)
+  // const likes: string[] = useSelector((state: AppState) => state.likePostReducer)
 
   const post = useMemo(() => {
-    const like = () => {
-      const userlike = likes.findIndex((val: string) => val === userName)
-      if (userlike === -1) {
-        dispatch(likePost(userName))
-      }
-    }
+    // const like = () => {
+    //   const userlike = likes.findIndex((val: string) => val === userName)
+    //   if (userlike === -1) {
+    //     dispatch(likePost(userName))
+    //   }
+    // }
+
+    const likes = postList.filter((val:PostVars) => val.likes)
 
     return postList.map((val: PostVars, index: any) => {
       const user: UsernameVar = val.username
@@ -43,13 +45,13 @@ const PostList = () => {
           <div onClick={() => toProfile()}><b>{user}</b></div>
           <div>{val.post}</div>
           <div>
-            <button onClick={() => like()}>Like</button>
+            <button onClick={() =>  dispatch(likePost(userName))}>Like</button>
             <span>{likes.length}</span>
           </div>
         </li>
       )
     })
-  }, [dispatch, postList, userName, likes])
+  }, [dispatch, postList, userName])
 
   return (
     <ul>

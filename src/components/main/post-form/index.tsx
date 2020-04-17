@@ -10,19 +10,17 @@ const PostForm = () => {
 
   const userName = useSelector((state: AppState) => state.logUserReducer)
 
-  const initialValues: PostVars = {
+  const initialValues:  Omit<PostVars,"comments" | "likes"> = {
     username: '',
-    post: '',
-    comments: '',
-    likes: ''
+    post: ''
   }
 
-  const onSubmit = (values: PostVars, { resetForm }: any) => {
+  const onSubmit = (values: Omit<PostVars,"comments" | "likes">, { resetForm }: any) => {
     const newPost = {
       username: userName,
       post: values.post,
-      comments: values.comments,
-      likes: values.likes
+      comments: [],
+      likes: []
     }
     dispatch(addPost(newPost))
     resetForm()

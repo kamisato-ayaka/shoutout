@@ -7,7 +7,7 @@ import logUserReducer from './logUserReducer'
 import postReducer from './postReducer'
 import toUserProfileReducer from './toUserProfileReducer'
 import getUserReducer from './getUserReducer'
-import likePostReducer from './likePostReducer'
+// import likePostReducer from './likePostReducer'
 
 const reducer = combineReducers({
     signupReducer,
@@ -17,7 +17,7 @@ const reducer = combineReducers({
     postReducer,
     toUserProfileReducer,
     getUserReducer,
-    likePostReducer
+    // likePostReducer
 })
 
 export default reducer

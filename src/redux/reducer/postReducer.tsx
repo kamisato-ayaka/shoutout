@@ -8,7 +8,10 @@ const reduce = (state: PostVars[] = initPost, action: any) => {
   switch (action.type) {
     case actionType.ADD_POST:
       return [...state, action.payload];
-      
+
+    case actionType.LIKE_POST:
+      return state.filter((user) => user.likes = [...user.likes, action.payload])
+
     default:
       return state;
   }
