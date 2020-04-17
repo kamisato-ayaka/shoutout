@@ -44,7 +44,7 @@ const UserProfile = () => {
     //   }
     // }
 
-    const likes = postList.filter((val:PostVars) => val.likes)
+    const likes = postList.filter((val: PostVars) => val.likes)
 
     return (
 
@@ -57,7 +57,7 @@ const UserProfile = () => {
             }}><b>{val.username}</b></div>
             <div>{val.post}</div>
             <div>
-              <button onClick={() =>  dispatch(likePost(userName))}>Like</button>
+              <button onClick={() => dispatch(likePost(userName))}>Like</button>
               <span>{likes.length}</span>
             </div>
           </li>)}
