@@ -32,12 +32,12 @@ const SignUp = () => {
     }),
   })
 
-  const onSubmit = (values: UserVars, { resetForm }: any) => {
+  const onSubmit = (values: Omit<UserVars,"followers">, { resetForm }: any) => {
     const newUser = {
       username: values.username,
       password: md5(values.password),
       confirmpassword: md5(values.confirmpassword),
-      followers: values.followers
+      followers: []
     }
 
     const index = userData.findIndex((val: UserVars) => val.username === values.username);
