@@ -4,6 +4,7 @@ import { PostVars } from '../main/dashboard/types'
 import { UsernameVar, followUser, unfollowUser, toUserProfile, getUser, likePost, unlikePost } from '../../redux/actions'
 import { AppState } from '../../redux/types'
 import { UserVars } from '../signup/types'
+import PostComment from '../post-comment'
 
 const UserProfile = () => {
   const dispatch = useDispatch()
@@ -36,7 +37,7 @@ const UserProfile = () => {
 
     return (
       <>
-        <h1>{account?.username}</h1>
+        <h1>{user}</h1>
         <p>Followers {account?.followers.length} Following {account?.following.length}</p>
         <button onClick={() => follow(account)}>Follow</button>
       </>
@@ -74,6 +75,7 @@ const UserProfile = () => {
       )
     }
 
+
     return (
       <ul>
         {findUser.map((val: PostVars, index: any) =>
@@ -85,15 +87,11 @@ const UserProfile = () => {
             <div>{val.post}</div>
 
             <div>
-              <button>Comment</button>
-            </div>
-            
-            <div>
               <button onClick={() => like(val)}>Like</button>
               {likesCount(val)}
             </div>
 
-
+            <PostComment post={val} />
           </li>)}
       </ul>
     )

@@ -16,7 +16,6 @@ type LikeVars = {
 
 type CommentVars = {
     postID: number
-    commentID: number
     usernameComment: string | ''
     comment: string | ''
 };

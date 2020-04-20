@@ -9,8 +9,8 @@ const PostForm = () => {
   const dispatch = useDispatch();
 
   const userName = useSelector((state: AppState) => state.logUserReducer)
-
   const posts = useSelector((state:AppState) => state.postReducer)
+
   const initialValues:  Omit<PostVars,"comments" | "likes"> = {
     id: 0,
     username: '',
@@ -28,6 +28,7 @@ const PostForm = () => {
     dispatch(addPost(newPost))
     resetForm()
   }
+
   return (
     <>
       <Formik
