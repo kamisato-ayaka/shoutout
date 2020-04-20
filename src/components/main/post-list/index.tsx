@@ -3,6 +3,7 @@ import { PostVars } from '../dashboard/types'
 import { useSelector, useDispatch } from 'react-redux'
 import { toUserProfile, getUser, UsernameVar, likePost, unlikePost } from '../../../redux/actions'
 import { AppState } from '../../../redux/types'
+import PostComment from '../../post-comment'
 
 const PostList = () => {
   const dispatch = useDispatch()
@@ -70,6 +71,8 @@ const PostList = () => {
             <button onClick={() => like(val)}>Like</button>
             {likesCount(val)}
           </div>
+
+          <PostComment post={val} />
         </li>
       )
     })

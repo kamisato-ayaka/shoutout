@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik'
 import { PostCommentVars, CommentVars } from './types';
-import { PostVars } from '../main/dashboard/types';
+import { PostVars, CommentVar } from '../main/dashboard/types';
 import { AppState } from '../../redux/types';
 import { addComment } from '../../redux/actions';
 
@@ -12,23 +12,25 @@ const PostComment: React.FC<PostCommentVars> = ({
 
   const dispatch = useDispatch()
 
-  const userName = useSelector((state: AppState) => state.getUserReducer)
+  const userName = useSelector((state: AppState) => state.logUserReducer)
   const postList: PostVars[] = useSelector((state: AppState) => state.postReducer)
 
   const [showComment, setShowComment] = useState<boolean>(false)
 
-  const initialValues: Omit<CommentVars, "postID" | "usernameComment"> = {
+  const initialValues: Omit<CommentVars, "usernameComment"> = {
+    postID: 0,
     comment: ''
   }
   const comment = () => setShowComment(true)
 
-  const onSubmit = (values: Omit<CommentVars, "postID" | "usernameComment">, { resetForm }: any) => {
+
+
+  const onSubmit = (values: Omit<CommentVars, "usernameComment">, { resetForm }: any) => {
     const commentData = {
-      postID: post.id,
+      postID: values.postID,
       usernameComment: userName,
       comment: values.comment
     }
-
     dispatch(addComment(commentData))
     resetForm()
   }
@@ -46,6 +48,25 @@ const PostComment: React.FC<PostCommentVars> = ({
       </>
     )
   }
+
+  const commentList = useMemo(() => {
+    const findComment = postList.find((val: PostVars) => val.id === post.id)
+    if (!findComment) return []
+
+    return (
+      <ul>
+        {findComment.comments.map((val: CommentVar, index: any) => {
+          return (
+            <li key={index}>
+              <div>{val.username}</div>
+              <div>{val.comment}</div>
+            </li>
+          )
+        })}
+      </ul>
+    )
+  }, [post.id, postList])
+
 
   return (
     <>
@@ -79,9 +100,7 @@ const PostComment: React.FC<PostCommentVars> = ({
             }
           </Formik>
 
-          <ul>
-   git 
-          </ul>
+          {commentList}
         </>
       }
 

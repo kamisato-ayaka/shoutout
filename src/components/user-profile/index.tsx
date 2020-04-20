@@ -35,11 +35,18 @@ const UserProfile = () => {
 
     const account = users.find((val: UserVars) => val.username === user)
 
+    const owner = () => {
+      if (userName !== user) {
+        return (
+          <button onClick={() => follow(account)}>Follow</button>
+        )
+      }
+    }
     return (
       <>
         <h1>{user}</h1>
         <p>Followers {account?.followers.length} Following {account?.following.length}</p>
-        <button onClick={() => follow(account)}>Follow</button>
+        {owner}
       </>
     )
   }, [user, users, dispatch, userName])
