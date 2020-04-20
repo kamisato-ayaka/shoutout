@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import { PostVars } from '../dashboard/types'
 import { useSelector, useDispatch } from 'react-redux'
-import { toUserProfile, getUser, UsernameVar, likePost } from '../../../redux/actions'
+import { toUserProfile, getUser, UsernameVar, likePost, unlikePost } from '../../../redux/actions'
 import { AppState } from '../../../redux/types'
 
 const PostList = () => {
@@ -24,11 +24,19 @@ const PostList = () => {
   const post = useMemo(() => {
 
     const like = (post: PostVars) => {
+      const index = post.likes.findIndex((val: string) => val === userName)
       const likeData = {
         postID: post.id,
         usernameLike: userName
       }
-      dispatch(likePost(likeData))
+
+      if (index === -1) {
+        dispatch(likePost(likeData))
+      }
+
+      else if (Number(index) > -1) {
+        dispatch(unlikePost(likeData))
+      }
     }
 
     return postList.map((val: PostVars, index: any) => {
@@ -57,7 +65,7 @@ const PostList = () => {
         <li key={index}>
           <div onClick={() => toProfile()}><b>{user}</b></div>
           <div>{val.post}</div>
-          
+
           <div>
             <button onClick={() => like(val)}>Like</button>
             {likesCount(val)}

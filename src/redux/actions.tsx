@@ -14,6 +14,13 @@ type LikeVars = {
     usernameLike: string | ''
 };
 
+type CommentVars = {
+    postID: number
+    commentID: number
+    usernameComment: string | ''
+    comment: string | ''
+};
+
 export const toSignup = () => {
     return {
         type: actionType.TO_SIGNUP
@@ -66,16 +73,44 @@ export const resetUser = () => {
     }
 }
 
-export const followingUser = (followData: FollowVars) => {
+export const followUser = (followData: FollowVars) => {
     return {
-        type: actionType.FOLLOWING_USER,
+        type: actionType.FOLLOW_USER,
         payload: followData
     }
 }
 
-export const likePost = (user: LikeVars) => {
+export const unfollowUser = (unfollowData: FollowVars) => {
+    return {
+        type: actionType.UNFOLLOW_USER,
+        payload: unfollowData
+    }
+}
+
+export const likePost = (likePost: LikeVars) => {
     return {
         type: actionType.LIKE_POST,
-        payload: user
+        payload: likePost
+    }
+}
+
+export const unlikePost = (unlikePost: LikeVars) => {
+    return {
+        type: actionType.UNLIKE_POST,
+        payload: unlikePost
+    }
+}
+
+export const addComment = (addComment: CommentVars) => {
+    return {
+        type: actionType.ADD_COMMENT,
+        payload: addComment
+    }
+}
+
+export const removeComment = (removeComment: CommentVars) => {
+    return {
+        type: actionType.REMOVE_COMMENT,
+        payload: removeComment
     }
 }
