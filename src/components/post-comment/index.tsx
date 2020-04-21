@@ -17,17 +17,14 @@ const PostComment: React.FC<PostCommentVars> = ({
 
   const [showComment, setShowComment] = useState<boolean>(false)
 
-  const initialValues: Omit<CommentVars, "usernameComment"> = {
-    postID: 0,
+  const initialValues: Omit<CommentVars, "postID" | "usernameComment"> = {
     comment: ''
   }
   const comment = () => setShowComment(true)
 
-
-
-  const onSubmit = (values: Omit<CommentVars, "usernameComment">, { resetForm }: any) => {
+  const onSubmit = (values: Omit<CommentVars, "postID" | "usernameComment">, { resetForm }: any) => {
     const commentData = {
-      postID: values.postID,
+      postID: post.id,
       usernameComment: userName,
       comment: values.comment
     }
@@ -56,6 +53,7 @@ const PostComment: React.FC<PostCommentVars> = ({
     return (
       <ul>
         {findComment.comments.map((val: CommentVar, index: any) => {
+          
           return (
             <li key={index}>
               <div>{val.username}</div>

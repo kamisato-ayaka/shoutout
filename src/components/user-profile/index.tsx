@@ -35,23 +35,17 @@ const UserProfile = () => {
 
     const account = users.find((val: UserVars) => val.username === user)
 
-    const owner = () => {
-      if (userName !== user) {
-        return (
-          <button onClick={() => follow(account)}>Follow</button>
-        )
-      }
-    }
     return (
       <>
         <h1>{user}</h1>
         <p>Followers {account?.followers.length} Following {account?.following.length}</p>
-        {owner}
+        <button onClick={() => follow(account)}>Follow</button>
       </>
     )
   }, [user, users, dispatch, userName])
 
   const userPost = useMemo(() => {
+
     const like = (post: PostVars) => {
       const index = post.likes.findIndex((val: string) => val === userName)
       const likeData = {
@@ -82,15 +76,16 @@ const UserProfile = () => {
       )
     }
 
+    const toProfile = () => {
+      dispatch(toUserProfile())
+      dispatch(getUser(user))
+    }
 
     return (
       <ul>
         {findUser.map((val: PostVars, index: any) =>
           <li key={index}>
-            <div onClick={() => {
-              dispatch(toUserProfile())
-              dispatch(getUser(user))
-            }}><b>{val.username}</b></div>
+            <div onClick={() => toProfile()}><b>{val.username}</b></div>
             <div>{val.post}</div>
 
             <div>

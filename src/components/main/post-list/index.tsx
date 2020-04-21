@@ -22,7 +22,7 @@ const PostList = () => {
     )
   );
 
-  const post = useMemo(() => {
+  const userPost = useMemo(() => {
 
     const like = (post: PostVars) => {
       const index = post.likes.findIndex((val: string) => val === userName)
@@ -43,11 +43,6 @@ const PostList = () => {
     return postList.map((val: PostVars, index: any) => {
       const user: UsernameVar = val.username
 
-      const toProfile = () => {
-        dispatch(toUserProfile())
-        dispatch(getUser(user))
-      }
-
       const likesCount = (post: PostVars) => {
         const likes = postList.filter((val: PostVars) => val.id === post.id)
         if (!likes) return []
@@ -62,6 +57,11 @@ const PostList = () => {
         )
       }
 
+      const toProfile = () => {
+        dispatch(toUserProfile())
+        dispatch(getUser(user))
+      }
+      
       return (
         <li key={index}>
           <div onClick={() => toProfile()}><b>{user}</b></div>
@@ -80,7 +80,7 @@ const PostList = () => {
 
   return (
     <ul>
-      {post}
+      {userPost}
     </ul>
   )
 }
