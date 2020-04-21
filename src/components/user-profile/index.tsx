@@ -81,7 +81,7 @@ const UserProfile = () => {
     }
 
     const toProfile = () => {
-      history.push("/profile")
+      history.push(`/${user}`)
       dispatch(getUser(user))
     }
 
@@ -103,16 +103,21 @@ const UserProfile = () => {
     )
   }, [dispatch, history, user, findUser, userName, postList])
 
+  const security = useMemo(() => {
+    return (
+      <>
+        <p>You must log in to view the page</p>
+        <Link to="/login"><button>Login</button></Link>
+        <Link to="/signup"><button>Sign Up</button></Link>
+      </>
+    )
+  }, [])
 
   return (
     <>
       <h1>Shoutout</h1>
       {(user === '') ?
-        <>
-          <p>Please Log in or Signup</p>
-          <Link to="/login"><button>Login</button></Link>
-          <Link to="/signup"><button>Sign Up</button></Link>
-        </> :
+        <>{security}</> :
         <>
           <Link to="/dashboard"><h3>Home</h3></Link>
 
@@ -120,11 +125,7 @@ const UserProfile = () => {
           {userPost}
 
           {(userName === '') ?
-            <>
-              <p>Please Log in or Signup</p>
-              <Link to="/login"><button>Login</button></Link>
-              <Link to="/signup"><button>Sign Up</button></Link>
-            </> : <Setting />}
+            <>{security}</> : <Setting />}
         </>
       }
     </>

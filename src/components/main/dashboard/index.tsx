@@ -16,7 +16,7 @@ const Dashboard = () => {
   const userName = useSelector((state: AppState) => state.logUserReducer)
 
   const toProfile = () => {
-    history.push("/profile")
+    history.push(`/${userName}`)
     dispatch(getUser(userName))
   }
 

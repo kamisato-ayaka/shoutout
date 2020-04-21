@@ -60,7 +60,7 @@ const PostList = () => {
       }
 
       const toProfile = () => {
-        history.push("/profile")
+        history.push(`/${user}`)
         dispatch(getUser(user))
       }
 

@@ -9,8 +9,14 @@ import Login from './components/login';
 import SignUp from './components/signup';
 import Dashboard from './components/main/dashboard';
 import UserProfile from './components/user-profile';
+import { UsernameVar } from './redux/actions';
+import { useSelector } from 'react-redux';
+import { AppState } from './redux/types';
 
 const App = () => {
+  const userName = useSelector((state: AppState) => state.logUserReducer)
+  const user: UsernameVar = useSelector((state: AppState) => state.getUserReducer)
+
   return (
     <div className="App">
       <Router>
@@ -24,7 +30,7 @@ const App = () => {
           <Route path="/dashboard">
             <Dashboard />
           </Route>
-          <Route path="/profile">
+          <Route path={`/${(user) || (userName)}`}>
             <UserProfile />
           </Route>
         </Switch>
