@@ -82,8 +82,8 @@ const UserProfile = () => {
     }
 
     const toProfile = () => {
-      history.push(`/${user}`)
       dispatch(getUser(user))
+      history.push(`/${user}`)
     }
 
     return (

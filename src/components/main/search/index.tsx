@@ -28,8 +28,8 @@ const Search = () => {
     if (toProfile > -1) {
       dispatch(getUser(user))
       setInvalid(false)
-      history.push(`/${user}`)
       resetForm()
+      history.push(`/${user}`)
 
     } else if (toProfile === -1) {
       setInvalid(true)
