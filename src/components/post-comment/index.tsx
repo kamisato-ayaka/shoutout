@@ -4,7 +4,7 @@ import { Formik } from 'formik'
 import { PostCommentVars, CommentVars } from './types';
 import { PostVars, CommentVar } from '../main/dashboard/types';
 import { AppState } from '../../redux/types';
-import { addComment, removeComment } from '../../redux/actions';
+import { addComment, removeComment, toUserProfile, getUser } from '../../redux/actions';
 
 const PostComment: React.FC<PostCommentVars> = ({
   post
@@ -50,13 +50,17 @@ const PostComment: React.FC<PostCommentVars> = ({
     const findComment = postList.find((val: PostVars) => val.id === post.id)
     if (!findComment) return []
 
+    const toProfile = (val: CommentVar) => {
+      dispatch(toUserProfile())
+      dispatch(getUser(val.username))
+    }
+
     return (
       <ul>
         {findComment.comments.map((val: CommentVar, index: any) => {
           return (
             <li key={index}>
-              <div>{val.username}</div>
-              <div>{val.comment}</div>
+              <div><b onClick={() => toProfile(val)}>{val.username}</b> {val.comment}</div>
               <button onClick={() => dispatch(removeComment(val))}>Delete</button>
             </li>
           )

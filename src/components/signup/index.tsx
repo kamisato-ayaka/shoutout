@@ -1,4 +1,10 @@
 import React, { useState } from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { toSignup, addUser } from '../../redux/actions';
 import * as Yup from 'yup'
@@ -6,6 +12,7 @@ import { Formik } from 'formik'
 import md5 from 'md5';
 import { UserVars } from './types';
 import { AppState } from '../../redux/types';
+import Login from '../login'
 
 const SignUp = () => {
   const dispatch = useDispatch();
@@ -53,7 +60,7 @@ const SignUp = () => {
   }
 
   return (
-    <>
+    <Router>
       <h1>Sign Up</h1>
       <Formik
         initialValues={initialValues}
@@ -108,8 +115,15 @@ const SignUp = () => {
         )}
       </Formik>
       {!invalid ? '' : <p className="message">Already Exist</p>}
-      <button onClick={() => dispatch(toSignup())}>Log In</button>
-    </>
+      
+      <Link to="/login"><button>Log In</button></Link>
+
+      <Switch>
+          <Route path="/login">
+            <Login />
+          </Route>
+        </Switch>
+    </Router>
   )
 }
 

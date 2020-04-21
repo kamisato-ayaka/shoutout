@@ -1,20 +1,25 @@
 import React, { useState } from 'react'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux'
-import { toSignup, toLogin, logUser } from '../../redux/actions'
+import { logUser } from '../../redux/actions'
 import * as Yup from 'yup'
 import { Formik } from 'formik'
 import md5 from 'md5'
 import { LoginVars } from './types'
 import { UserVars } from '../signup/types'
-import SignUp from '../signup'
-import Dashboard from '../main/dashboard'
 import { AppState } from '../../redux/types'
+import SignUp from '../signup';
+import Dashboard from '../main/dashboard';
+
 
 const Login = () => {
   const dispatch = useDispatch()
 
-  const togoSignup = useSelector((state: AppState) => state.toSignupReducer)
-  const togoLogin = useSelector((state: AppState) => state.toLoginReducer)
   const userData: UserVars[] = useSelector((state: AppState) => state.signupReducer)
 
   const [invalid, setInvalid] = useState<boolean>(false)
@@ -35,8 +40,7 @@ const Login = () => {
       if (user > -1) {
         setSubmitting(false);
         dispatch(logUser(loguser))
-        dispatch(toLogin())
-        
+
       } else if (user === -1) {
         setInvalid(true)
         resetForm()
@@ -46,68 +50,69 @@ const Login = () => {
 
   const signUp = () => {
     setInvalid(false)
-    dispatch(toSignup())
   }
 
   return (
-    <>
-      {!togoLogin ?
-        <Dashboard /> :
-        <>
-          {togoSignup ?
-            <SignUp /> :
+    <Router>
+      <h1>Log In</h1>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        validateOnChange={false}
+        validateOnBlur={false}
+        onSubmit={onSubmit}>
+        {
+          formik => (
             <>
-              <h1>Log In</h1>
-              <Formik
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                validateOnChange={false}
-                validateOnBlur={false}
-                onSubmit={onSubmit}>
-                {
-                  formik => (
-                    <>
-                      <form onSubmit={formik.handleSubmit}>
-                        <div>
-                          <input
-                            type="text"
-                            name="username"
-                            placeholder="Username"
-                            value={formik.values.username}
-                            onBlur={formik.handleBlur}
-                            onChange={formik.handleChange}
-                          />
-                          {formik.touched.username && formik.errors.username ? (
-                            <div>{formik.errors.username}</div>
-                          ) : null}
-                        </div>
+              <form onSubmit={formik.handleSubmit}>
+                <div>
+                  <input
+                    type="text"
+                    name="username"
+                    placeholder="Username"
+                    value={formik.values.username}
+                    onBlur={formik.handleBlur}
+                    onChange={formik.handleChange}
+                  />
+                  {formik.touched.username && formik.errors.username ? (
+                    <div>{formik.errors.username}</div>
+                  ) : null}
+                </div>
 
-                        <div>
-                          <input
-                            type="password"
-                            name="password"
-                            placeholder="Password"
-                            value={formik.values.password}
-                            onBlur={formik.handleBlur}
-                            onChange={formik.handleChange}
-                          />
-                          {formik.touched.password && formik.errors.password ? (
-                            <div>{formik.errors.password}</div>
-                          ) : null}
-                        </div>
-                        <button type="submit">Log In</button>
-                      </form>
-                    </>
-                  )
-                }
-              </Formik>
-              {!invalid ? '' : <p className="message">Account doesn't exist.</p>}
-              <button onClick={() => signUp()}>Sign Up</button>
+                <div>
+                  <input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    value={formik.values.password}
+                    onBlur={formik.handleBlur}
+                    onChange={formik.handleChange}
+                  />
+                  {formik.touched.password && formik.errors.password ? (
+                    <div>{formik.errors.password}</div>
+                  ) : null}
+                </div>
+
+                <Link to="/dashboard"><button type="submit">Log In</button></Link>
+              </form>
             </>
-          }
-        </>
-      }
-    </>
+          )
+        }
+      </Formik>
+      {!invalid ? '' : <p className="message">Account doesn't exist.</p>}
+
+      <Link to="/signup"><button onClick={() => signUp()}>Sign Up</button></Link>
+
+      <Switch>
+        <Route path="/signup">
+          <SignUp />
+        </Route>
+        <Route path="/dashboard">
+          <Dashboard />
+        </Route>
+      </Switch>
+      
+    </Router >
   )
 }
 
