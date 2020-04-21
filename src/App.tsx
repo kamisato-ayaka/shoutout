@@ -1,28 +1,33 @@
 import React from 'react';
 import './App.css';
-import Login from './components/login';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-} from 'react-router-dom';
+} from 'react-router-dom'
+import Login from './components/login';
 import SignUp from './components/signup';
 import Dashboard from './components/main/dashboard';
+import UserProfile from './components/user-profile';
 
 const App = () => {
   return (
     <div className="App">
       <Router>
-        <Login />
-
         <Switch>
-        <Route path="/signup">
-          <SignUp />
-        </Route>
-        <Route path="/dashboard">
-          <Dashboard />
-        </Route>
-      </Switch>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/signup">
+            <SignUp />
+          </Route>
+          <Route path="/dashboard">
+            <Dashboard />
+          </Route>
+          <Route path="/profile">
+            <UserProfile />
+          </Route>
+        </Switch>
       </Router>
     </div>
   );

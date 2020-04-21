@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom'
+import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux'
-import { logUser } from '../../redux/actions'
+import { loginUser } from '../../redux/actions'
 import * as Yup from 'yup'
 import { Formik } from 'formik'
 import md5 from 'md5'
@@ -12,7 +13,7 @@ import { AppState } from '../../redux/types'
 
 const Login = () => {
   const dispatch = useDispatch()
-
+  const history = useHistory()
   const userData: UserVars[] = useSelector((state: AppState) => state.signupReducer)
 
   const [invalid, setInvalid] = useState<boolean>(false)
@@ -26,24 +27,20 @@ const Login = () => {
     password: Yup.string().required("Required")
   })
 
-  const onSubmit = (values: LoginVars, { setSubmitting, resetForm }: any) => {
-    setTimeout(() => {
-      const user = userData.findIndex((val: UserVars) => val.username === values.username && val.password === md5(values.password))
-      let loguser = values.username
-      if (user > -1) {
-        setSubmitting(false);
-        dispatch(logUser(loguser))
+  const onSubmit = (values: LoginVars, { resetForm }: any) => {
+    const user = userData.findIndex((val: UserVars) => val.username === values.username && val.password === md5(values.password))
+    let loguser = values.username
+    if (user > -1) {
+      dispatch(loginUser(loguser))
+      history.replace("/dashboard")
 
-      } else if (user === -1) {
-        setInvalid(true)
-        resetForm()
-      }
-    }, 100);
+    } else if (user === -1) {
+      setInvalid(true)
+      resetForm()
+    }
   }
 
-  const signUp = () => {
-    setInvalid(false)
-  }
+  const signUp = () => setInvalid(false)
 
   return (
     <>
@@ -85,19 +82,14 @@ const Login = () => {
                     <div>{formik.errors.password}</div>
                   ) : null}
                 </div>
-
-                <Link to="/dashboard"><button type="submit">Log In</button></Link>
+                <button type="submit">Log In</button>
               </form>
             </>
           )
         }
       </Formik>
       {!invalid ? '' : <p className="message">Account doesn't exist.</p>}
-
       <Link to="/signup"><button onClick={() => signUp()}>Sign Up</button></Link>
-
-
-
     </>
   )
 }

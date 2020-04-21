@@ -1,13 +1,17 @@
 import React, { useMemo } from 'react'
+import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'
 import { PostVars } from '../main/dashboard/types'
-import { UsernameVar, followUser, unfollowUser, toUserProfile, getUser, likePost, unlikePost } from '../../redux/actions'
+import { UsernameVar, followUser, unfollowUser, getUser, likePost, unlikePost } from '../../redux/actions'
 import { AppState } from '../../redux/types'
 import { UserVars } from '../signup/types'
 import PostComment from '../post-comment'
+import Setting from '../main/setting';
 
 const UserProfile = () => {
   const dispatch = useDispatch()
+  const history = useHistory()
 
   const userName = useSelector((state: AppState) => state.logUserReducer)
   const postList: PostVars[] = useSelector((state: AppState) => state.postReducer)
@@ -39,7 +43,7 @@ const UserProfile = () => {
       <>
         <h1>{user}</h1>
         <p>Followers {account?.followers.length} Following {account?.following.length}</p>
-        <button onClick={() => follow(account)}>Follow</button>
+        {(userName === user) ? '' : <button onClick={() => follow(account)}>Follow</button>}
       </>
     )
   }, [user, users, dispatch, userName])
@@ -77,7 +81,7 @@ const UserProfile = () => {
     }
 
     const toProfile = () => {
-      dispatch(toUserProfile())
+      history.push("/profile")
       dispatch(getUser(user))
     }
 
@@ -97,12 +101,27 @@ const UserProfile = () => {
           </li>)}
       </ul>
     )
-  }, [dispatch, user, findUser, userName, postList])
+  }, [dispatch, history, user, findUser, userName, postList])
+
 
   return (
     <>
-      {userAccount}
-      {userPost}
+      <h1>Shoutout</h1>
+      {(user === '') ?
+        <>
+        <p>Please Log in or Signup</p>
+        <Link to="/login"><button>Login</button></Link>
+        <Link to="/signup"><button>Sign Up</button></Link>
+        </> : 
+        <>
+          <Link to="/dashboard"><h3>Home</h3></Link>
+
+          {userAccount}
+          {userPost}
+
+          <Setting />
+        </>
+      }
     </>
   )
 }
