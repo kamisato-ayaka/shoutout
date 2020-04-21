@@ -5,7 +5,6 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux'
 import { logUser } from '../../redux/actions'
 import * as Yup from 'yup'
@@ -19,7 +18,6 @@ import Dashboard from '../main/dashboard';
 
 const Login = () => {
   const dispatch = useDispatch()
-  const history = useHistory();
 
   const userData: UserVars[] = useSelector((state: AppState) => state.signupReducer)
 
@@ -51,7 +49,6 @@ const Login = () => {
 
   const signUp = () => {
     setInvalid(false)
-    history.replace("/signup");
   }
 
   return (
@@ -103,7 +100,7 @@ const Login = () => {
       </Formik>
       {!invalid ? '' : <p className="message">Account doesn't exist.</p>}
 
-      <button onClick={() => signUp()}>Sign Up</button>
+      <Link to="/signup"><button onClick={() => signUp()}>Sign Up</button></Link>
 
       <Switch>
         <Route path="/signup">
