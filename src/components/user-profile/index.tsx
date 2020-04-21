@@ -109,17 +109,22 @@ const UserProfile = () => {
       <h1>Shoutout</h1>
       {(user === '') ?
         <>
-        <p>Please Log in or Signup</p>
-        <Link to="/login"><button>Login</button></Link>
-        <Link to="/signup"><button>Sign Up</button></Link>
-        </> : 
+          <p>Please Log in or Signup</p>
+          <Link to="/login"><button>Login</button></Link>
+          <Link to="/signup"><button>Sign Up</button></Link>
+        </> :
         <>
           <Link to="/dashboard"><h3>Home</h3></Link>
 
           {userAccount}
           {userPost}
 
-          <Setting />
+          {(userName === '') ?
+            <>
+              <p>Please Log in or Signup</p>
+              <Link to="/login"><button>Login</button></Link>
+              <Link to="/signup"><button>Sign Up</button></Link>
+            </> : <Setting />}
         </>
       }
     </>
