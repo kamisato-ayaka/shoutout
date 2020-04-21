@@ -24,10 +24,11 @@ const Search = () => {
   const onSubmit = (values: SearchVar, { resetForm }: any) => {
 
     const toProfile = users.findIndex((val: UserVars) => val.username === values.searchItem)
+    const user = values.searchItem
     if (toProfile > -1) {
-      history.push("/profile")
-      dispatch(getUser(values.searchItem))
+      dispatch(getUser(user))
       setInvalid(false)
+      history.push(`/${user}`)
       resetForm()
 
     } else if (toProfile === -1) {

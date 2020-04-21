@@ -26,7 +26,7 @@ const Dashboard = () => {
 
       {(userName === '') ?
         <>
-          <p>Please Log in or Signup</p>
+          <p>You must log in to view the page.</p>
           <Link to="/login"><button>Login</button></Link>
           <Link to="/signup"><button>Sign Up</button></Link>
         </> :

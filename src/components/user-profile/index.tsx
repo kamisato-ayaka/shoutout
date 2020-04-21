@@ -8,6 +8,7 @@ import { AppState } from '../../redux/types'
 import { UserVars } from '../signup/types'
 import PostComment from '../post-comment'
 import Setting from '../main/setting';
+import Search from '../main/search';
 
 const UserProfile = () => {
   const dispatch = useDispatch()
@@ -106,7 +107,7 @@ const UserProfile = () => {
   const security = useMemo(() => {
     return (
       <>
-        <p>You must log in to view the page</p>
+        <p>You must log in to view the page.</p>
         <Link to="/login"><button>Login</button></Link>
         <Link to="/signup"><button>Sign Up</button></Link>
       </>
@@ -117,10 +118,11 @@ const UserProfile = () => {
     <>
       <h1>Shoutout</h1>
       {(user === '') ?
-        <>{security}</> :
+        <>{security}
+        </> :
         <>
           <Link to="/dashboard"><h3>Home</h3></Link>
-
+          <Search />
           {userAccount}
           {userPost}
 
