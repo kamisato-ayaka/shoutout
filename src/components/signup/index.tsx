@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { toSignup, addUser } from '../../redux/actions';
 import * as Yup from 'yup'
@@ -12,7 +7,6 @@ import { Formik } from 'formik'
 import md5 from 'md5';
 import { UserVars } from './types';
 import { AppState } from '../../redux/types';
-import Login from '../login'
 
 const SignUp = () => {
   const dispatch = useDispatch();
@@ -20,13 +14,13 @@ const SignUp = () => {
 
   const [invalid, setInvalid] = useState<boolean>(false)
 
-  const initialValues: Omit<UserVars,"following" | "followers"> | null = {
+  const initialValues: Omit<UserVars, "following" | "followers"> | null = {
     username: '',
     password: '',
     confirmpassword: '',
   }
 
-  const validationSchema: Yup.ObjectSchema<Omit<UserVars,"following" | "followers">> = Yup.object().shape({
+  const validationSchema: Yup.ObjectSchema<Omit<UserVars, "following" | "followers">> = Yup.object().shape({
     username: Yup.string().required("Required"),
     password: Yup.string().required("Required")
       .min(8, 'Password is too short - should be 8 chars minimum.'),
@@ -39,7 +33,7 @@ const SignUp = () => {
     }),
   })
 
-  const onSubmit = (values: Omit<UserVars,"following" | "followers">, { resetForm }: any) => {
+  const onSubmit = (values: Omit<UserVars, "following" | "followers">, { resetForm }: any) => {
     const newUser = {
       username: values.username,
       password: md5(values.password),
@@ -60,7 +54,7 @@ const SignUp = () => {
   }
 
   return (
-    <Router>
+    <>
       <h1>Sign Up</h1>
       <Formik
         initialValues={initialValues}
@@ -115,15 +109,9 @@ const SignUp = () => {
         )}
       </Formik>
       {!invalid ? '' : <p className="message">Already Exist</p>}
-      
-      <Link to="/login"><button>Log In</button></Link>
 
-      <Switch>
-          <Route path="/login">
-            <Login />
-          </Route>
-        </Switch>
-    </Router>
+      <Link to="/login"><button>Log In</button></Link>
+    </>
   )
 }
 

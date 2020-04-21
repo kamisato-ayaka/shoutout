@@ -1,10 +1,5 @@
 import React, { useState } from 'react'
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux'
 import { logUser } from '../../redux/actions'
 import * as Yup from 'yup'
@@ -13,8 +8,7 @@ import md5 from 'md5'
 import { LoginVars } from './types'
 import { UserVars } from '../signup/types'
 import { AppState } from '../../redux/types'
-import SignUp from '../signup';
-import Dashboard from '../main/dashboard';
+
 
 const Login = () => {
   const dispatch = useDispatch()
@@ -52,7 +46,7 @@ const Login = () => {
   }
 
   return (
-    <Router>
+    <>
       <h1>Log In</h1>
       <Formik
         initialValues={initialValues}
@@ -102,16 +96,9 @@ const Login = () => {
 
       <Link to="/signup"><button onClick={() => signUp()}>Sign Up</button></Link>
 
-      <Switch>
-        <Route path="/signup">
-          <SignUp />
-        </Route>
-        <Route path="/dashboard">
-          <Dashboard />
-        </Route>
-      </Switch>
 
-    </Router >
+
+    </>
   )
 }
 
