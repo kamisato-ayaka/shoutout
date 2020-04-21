@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { toSignup, addUser } from '../../redux/actions';
+import { addUser } from '../../redux/actions';
 import * as Yup from 'yup'
 import { Formik } from 'formik'
 import md5 from 'md5';
@@ -45,7 +46,7 @@ const SignUp = () => {
     if (index === -1) {
       dispatch(addUser(newUser));
       resetForm();
-      dispatch(toSignup())
+
     } else if (index > -1) {
       setInvalid(true)
       resetForm();
@@ -108,7 +109,7 @@ const SignUp = () => {
         )}
       </Formik>
       {!invalid ? '' : <p className="message">Already Exist</p>}
-      <button onClick={() => dispatch(toSignup())}>Log In</button>
+      <Link to="/login"><button>Log In</button></Link>
     </>
   )
 }

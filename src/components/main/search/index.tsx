@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { Formik } from 'formik'
+import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux'
-import { toUserProfile, getUser } from '../../../redux/actions'
+import { getUser } from '../../../redux/actions'
+import { Formik } from 'formik'
 import { AppState } from '../../../redux/types'
 import { UserVars } from '../../signup/types'
 
@@ -10,6 +11,7 @@ export type SearchVar = {
 }
 const Search = () => {
   const dispatch = useDispatch()
+  const history = useHistory()
 
   const users = useSelector((state: AppState) => state.signupReducer)
 
@@ -23,7 +25,7 @@ const Search = () => {
 
     const toProfile = users.findIndex((val: UserVars) => val.username === values.searchItem)
     if (toProfile > -1) {
-      dispatch(toUserProfile())
+      history.push("/profile")
       dispatch(getUser(values.searchItem))
       setInvalid(false)
       resetForm()

@@ -25,22 +25,17 @@ type CommentVar = {
     comment: string | ''
 };
 
-export const toSignup = () => {
-    return {
-        type: actionType.TO_SIGNUP
-    }
-}
 
-export const toLogin = () => {
+export const loginUser = (user: string) => {
     return {
-        type: actionType.TO_LOGIN
-    }
-}
-
-export const logUser = (user: string) => {
-    return {
-        type: actionType.LOG_USER,
+        type: actionType.LOGIN_USER,
         payload: user
+    }
+}
+
+export const logoutUser = () => {
+    return {
+        type: actionType.LOGOUT_USER,
     }
 }
 
@@ -58,11 +53,6 @@ export const addPost = (newPost: PostVars) => {
     }
 }
 
-export const toUserProfile = () => {
-    return {
-        type: actionType.TO_USER_PROFILE
-    }
-}
 
 export const getUser = (user: UsernameVar) => {
     return {

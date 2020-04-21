@@ -1,16 +1,18 @@
 import React, { useState, useMemo } from 'react';
+import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik'
 import { PostCommentVars, CommentVars } from './types';
 import { PostVars, CommentVar } from '../main/dashboard/types';
 import { AppState } from '../../redux/types';
-import { addComment, removeComment } from '../../redux/actions';
+import { addComment, removeComment, getUser } from '../../redux/actions';
 
 const PostComment: React.FC<PostCommentVars> = ({
   post
 }) => {
 
   const dispatch = useDispatch()
+  const history = useHistory()
 
   const userName = useSelector((state: AppState) => state.logUserReducer)
   const postList: PostVars[] = useSelector((state: AppState) => state.postReducer)
@@ -53,17 +55,21 @@ const PostComment: React.FC<PostCommentVars> = ({
     return (
       <ul>
         {findComment.comments.map((val: CommentVar, index: any) => {
+          const toProfile = (val: CommentVar) => {
+            history.push("/profile")
+            dispatch(getUser(val.username))
+          }
+
           return (
             <li key={index}>
-              <div>{val.username}</div>
-              <div>{val.comment}</div>
+              <div onClick={() => toProfile(val)}><b>{val.username}</b> {val.comment}</div>
               <button onClick={() => dispatch(removeComment(val))}>Delete</button>
             </li>
           )
         })}
       </ul>
     )
-  }, [post.id, postList, dispatch])
+  }, [post.id, postList, dispatch, history])
 
 
   return (
