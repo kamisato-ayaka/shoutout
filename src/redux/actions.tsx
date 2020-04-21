@@ -20,6 +20,11 @@ type CommentVars = {
     comment: string | ''
 };
 
+type CommentVar = {
+    username: string | ''
+    comment: string | ''
+};
+
 export const toSignup = () => {
     return {
         type: actionType.TO_SIGNUP
@@ -107,7 +112,7 @@ export const addComment = (addComment: CommentVars) => {
     }
 }
 
-export const removeComment = (removeComment: CommentVars) => {
+export const removeComment = (removeComment: CommentVar) => {
     return {
         type: actionType.REMOVE_COMMENT,
         payload: removeComment

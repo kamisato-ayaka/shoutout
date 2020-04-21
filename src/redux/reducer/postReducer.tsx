@@ -1,5 +1,5 @@
 import * as actionType from "../strings";
-import { PostVars, CommentVar } from "../../components/main/dashboard/types";
+import { PostVars } from "../../components/main/dashboard/types";
 
 const postData = localStorage.getItem("post");
 const initPost: PostVars[] = postData == null ? [
@@ -18,9 +18,15 @@ type CommentVars = {
   comment: string | ''
 };
 
+type CommentVar = {
+  username: string | ''
+  comment: string | ''
+};
+
 const reduce = (state: PostVars[] = initPost, action: any) => {
   const postVal = action.payload as LikeVars
   const commentVal = action.payload as CommentVars
+  const removeVal = action.payload as CommentVar
 
   switch (action.type) {
     case actionType.ADD_POST:
@@ -44,31 +50,28 @@ const reduce = (state: PostVars[] = initPost, action: any) => {
         return true
       })
 
-      case actionType.ADD_COMMENT:
-        return state.filter((post) => {
-          if (post.id === commentVal.postID) {
-            const commentData = {
-              username: commentVal.usernameComment,
-              comment: commentVal.comment
-            }
-            return post.comments = [...post.comments, commentData]
+    case actionType.ADD_COMMENT:
+      return state.filter((post) => {
+        if (post.id === commentVal.postID) {
+          const commentData = {
+            username: commentVal.usernameComment,
+            comment: commentVal.comment
           }
-          return true
-        })
-  
-      case actionType.REMOVE_COMMENT:
-        return state.filter((post) => {
-          if (post.id === commentVal.postID) {
-            let postItem = [...post.comments]
-            const commentData = {
-              username: commentVal.usernameComment,
-              comment: commentVal.comment
-            }
-            const unlikePost = postItem.filter((arc: CommentVar) => arc !== commentData)
-            return post.comments = unlikePost
-          }
-          return true
-        })
+          return post.comments = [...post.comments, commentData]
+        }
+        return true
+      })
+
+    case actionType.REMOVE_COMMENT:
+      return state.filter((post) => {
+        const index = post.comments.findIndex((val: any) => val === removeVal)
+        if (index > -1) {
+          let postItem = [...post.comments]
+          const removeComment = postItem.filter((arc: CommentVar) => arc !== removeVal)
+          return post.comments = removeComment
+        }
+        return true
+      })
 
     default:
       return state;

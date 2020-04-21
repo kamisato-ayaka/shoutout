@@ -61,7 +61,7 @@ const PostList = () => {
         dispatch(toUserProfile())
         dispatch(getUser(user))
       }
-      
+
       return (
         <li key={index}>
           <div onClick={() => toProfile()}><b>{user}</b></div>
@@ -73,6 +73,7 @@ const PostList = () => {
           </div>
 
           <PostComment post={val} />
+
         </li>
       )
     })
