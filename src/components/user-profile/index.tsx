@@ -1,15 +1,15 @@
-import React, { useMemo } from 'react'
+import React, { useState, useMemo } from 'react'
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'
 import { PostVars } from '../main/dashboard/types'
-import { UsernameVar, followUser, unfollowUser, getUser, likePost, unlikePost } from '../../redux/actions'
+import { UsernameVar, followUser, unfollowUser, getUser, likePost, unlikePost, removePost } from '../../redux/actions'
 import { AppState } from '../../redux/types'
 import { UserVars } from '../signup/types'
 import PostComment from '../post-comment'
 import Setting from '../main/setting';
 import Search from '../main/search';
-import { Dboard, PostDiv, PostGroup, P, UserGroup, UserLink, UserText, UserButton, Header, Logo, Button, FormInvalid, SocialGroup, SocialLink, SocialText, FollowGroup, H1User, H2, UserInfo, H1, UserNameInfo } from '../styles';
+import { Dboard, PostDiv, PostGroup, P, UserGroup, UserLink, UserText, UserButton, Header, Logo, Button, FormInvalid, SocialGroup, SocialLink, SocialText, FollowGroup, H1User, H2, UserInfo, H1, UserNameInfo, CommentGroup } from '../styles';
 
 const UserProfile = () => {
   const dispatch = useDispatch()
@@ -19,6 +19,8 @@ const UserProfile = () => {
   const postList: PostVars[] = useSelector((state: AppState) => state.postReducer)
   const user: UsernameVar = useSelector((state: AppState) => state.getUserReducer)
   const users: UserVars[] = useSelector((state: AppState) => state.signupReducer)
+
+  const [showComment, setShowComment] = useState<boolean>(false)
 
   const findUser: PostVars[] = postList.filter((val: PostVars) => val.username === user)
 
@@ -42,7 +44,7 @@ const UserProfile = () => {
     const account = users.find((val: UserVars) => val.username === user)
 
     const UserProfile = require('../../images/katrina-p.png');
-    
+
     return (
       <>
         <UserInfo>
@@ -52,14 +54,17 @@ const UserProfile = () => {
         </UserInfo>
 
         <UserGroup>
-          {(userName === user) ? <UserButton>Edit Profile</UserButton> : <UserButton onClick={() => follow(account)}>Follow</UserButton>}
+          {(userName === user)
+            ? <UserButton>Edit Profile</UserButton>
+            : <UserButton onClick={() => follow(account)}>Follow</UserButton>
+          }
           <UserInfo>Lorem ipsum dolor sit amet. Mauris in mi vulputate. <br></br> Pellentesque eros nec, eleifend tellus. Curabitur maximus magna quis.</UserInfo>
           <FollowGroup>
             <H1User>{account?.followers.length}</H1User>
             <H2>Followers</H2>
           </FollowGroup>
           <FollowGroup>
-            <H1User>{account?.following.length}</H1User>
+            <H1User>{Number(account?.following.length) - 1}</H1User>
             <H2>Following</H2>
           </FollowGroup>
         </UserGroup>
@@ -104,8 +109,26 @@ const UserProfile = () => {
       history.push(`/${user}`)
     }
 
+    const comment = () => setShowComment(true)
+
+    const commentsCount = (post: PostVars) => {
+      const comments = postList.filter((val: PostVars) => val.id === post.id)
+      if (!comments) return []
+      return (
+        <>
+          {comments.map((val: PostVars) => {
+            return (
+              <SocialText key={val.id}>{val.comments.length}</SocialText>
+            )
+          })}
+        </>
+      )
+    }
+
     const userImg = require('../../images/pual.png');
     const likeImg = require('../../images/like.svg');
+    const commentImg = require('../../images/comment.svg');
+    const deleteImg = require('../../images/delete.svg');
 
     return (
       <ul>
@@ -124,20 +147,33 @@ const UserProfile = () => {
 
               <SocialGroup>
                 <SocialLink>
-                  <img src={likeImg} alt="" onClick={() => like(val)} />
+                  <img src={likeImg} alt="" title="Like" onClick={() => like(val)} />
                   {likesCount(val)}
                 </SocialLink>
-                
+
                 <SocialLink>
-                  <PostComment post={val} />
+                  <img src={commentImg} alt="" title="Comment" onClick={comment} />
+                  {commentsCount(val)}
                 </SocialLink>
+                {(val.username === userName) ?
+                  <SocialLink>
+                    <img src={deleteImg} alt="" title="Delete" onClick={() => dispatch(removePost(val))} />
+                  </SocialLink>
+                  : ''}
               </SocialGroup>
+
+              <CommentGroup>
+                <PostComment
+                  showComment={showComment}
+                  post={val} />
+              </CommentGroup>
+
 
             </PostDiv>
           </li>)}
       </ul>
     )
-  }, [dispatch, history, user, findUser, userName, postList])
+  }, [dispatch, history, user, findUser, userName, postList, showComment])
 
   const security = useMemo(() => {
     return (

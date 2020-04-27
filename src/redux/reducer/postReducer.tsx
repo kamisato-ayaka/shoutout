@@ -2,10 +2,7 @@ import * as actionType from "../strings";
 import { PostVars } from "../../components/main/dashboard/types";
 
 const postData = localStorage.getItem("post");
-const initPost: PostVars[] = postData == null ? [
-  { "id": 0, "username": "popo", "post": "Hi!", "comments": [], "likes": ["teffy", "ran"] },
-  { "id": 1, "username": "teffy", "post": "It's been a while", "comments": [], "likes": ["popo"] }
-] : JSON.parse(postData);
+const initPost: PostVars[] = postData == null ? [] : JSON.parse(postData);
 
 type LikeVars = {
   postID: number
@@ -25,12 +22,18 @@ type CommentVar = {
 
 const reduce = (state: PostVars[] = initPost, action: any) => {
   const postVal = action.payload as LikeVars
+  const postItem = action.payload
   const commentVal = action.payload as CommentVars
   const removeVal = action.payload as CommentVar
 
   switch (action.type) {
     case actionType.ADD_POST:
       return [...state, action.payload];
+
+    case actionType.REMOVE_POST:
+      let post = [...state]
+      const removePost = post.filter((arc: PostVars) => arc.id !== postItem.id)
+      return state = removePost
 
     case actionType.LIKE_POST:
       return state.filter((post) => {

@@ -5,7 +5,7 @@ import { addPost, getUser } from '../../../redux/actions'
 import { Formik } from 'formik'
 import { PostVars } from '../dashboard/types'
 import { AppState } from '../../../redux/types'
-import { PostDiv, UserLink, UserText } from '../../styles'
+import { PostDiv, UserLink, UserText, ButtonPost } from '../../styles'
 
 const PostForm = () => {
   const dispatch = useDispatch()
@@ -61,6 +61,7 @@ const PostForm = () => {
                     onBlur={formik.handleBlur}
                     onChange={formik.handleChange}
                   />
+                  <ButtonPost type="submit">Shoutout</ButtonPost>
                   {formik.touched.post && formik.errors.post ? (
                     <div>{formik.errors.post}</div>
                   ) : null}

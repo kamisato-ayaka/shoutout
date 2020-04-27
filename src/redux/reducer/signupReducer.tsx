@@ -2,10 +2,7 @@ import * as actionType from "../strings";
 import { UserVars } from "../../components/signup/types";
 
 const userData = localStorage.getItem("user");
-const initUser: UserVars[] = userData == null ? [
-  { "username": "teffy", "password": "3dbe00a167653a1aaee01d93e77e730e", "confirmpassword": "3dbe00a167653a1aaee01d93e77e730e", "following": [], "followers": [] },
-  { "username": "popo", "password": "3dbe00a167653a1aaee01d93e77e730e", "confirmpassword": "3dbe00a167653a1aaee01d93e77e730e", "following": [], "followers": [] }
-] : JSON.parse(userData);
+const initUser: UserVars[] = userData == null ? [] : JSON.parse(userData);
 
 type FollowVars = {
   usernameToFollow: string
@@ -17,7 +14,15 @@ const reduce = (state: UserVars[] = initUser, action: any) => {
 
   switch (action.type) {
     case actionType.ADD_USER:
-      return [...state, action.payload];
+      let value = action.payload
+      const newUser = {
+        username: value.username,
+        password: value.password,
+        confirmpassword: value.confirmpassword,
+        following: [value.username],
+        followers: value.followers
+      }
+      return [...state, newUser];
 
     case actionType.FOLLOW_USER:
       return state.filter((user) => {

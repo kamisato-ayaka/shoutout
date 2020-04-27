@@ -1,11 +1,11 @@
-import React, { useMemo } from 'react'
+import React, { useState, useMemo } from 'react'
 import { useHistory } from "react-router-dom";
 import { PostVars } from '../dashboard/types'
 import { useSelector, useDispatch } from 'react-redux'
-import { getUser, UsernameVar, likePost, unlikePost } from '../../../redux/actions'
+import { getUser, UsernameVar, likePost, unlikePost, removePost } from '../../../redux/actions'
 import { AppState } from '../../../redux/types'
 import PostComment from '../../post-comment'
-import { PostDiv, UserLink, UserText, PostGroup, SocialGroup, SocialText, SocialLink, P } from '../../styles';
+import { PostDiv, UserLink, UserText, PostGroup, SocialGroup, SocialText, SocialLink, P, CommentGroup } from '../../styles';
 
 const PostList = () => {
   const dispatch = useDispatch()
@@ -18,12 +18,16 @@ const PostList = () => {
         value.followers.findIndex((follower) => follower === userName) > -1
     )
   );
+  console.log(following);
+  
   const postList: PostVars[] = useSelector((state: AppState) =>
     state.postReducer.filter(
       (post) =>
         following.findIndex((user) => user.username === post.username) > -1
     )
   );
+
+  const [showComment, setShowComment] = useState<boolean>(false)
 
   const userPost = useMemo(() => {
 
@@ -65,8 +69,26 @@ const PostList = () => {
         history.push(`/${user}`)
       }
 
+      const comment = () => setShowComment(true)
+
+      const commentsCount = (post: PostVars) => {
+        const comments = postList.filter((val: PostVars) => val.id === post.id)
+        if (!comments) return []
+        return (
+          <>
+            {comments.map((val: PostVars) => {
+              return (
+                <SocialText key={val.id}>{val.comments.length}</SocialText>
+              )
+            })}
+          </>
+        )
+      }
+
       const userImg = require('../../../images/kristina.png');
       const likeImg = require('../../../images/like.svg');
+      const commentImg = require('../../../images/comment.svg');
+      const deleteImg = require('../../../images/delete.svg');
 
       return (
         <li key={index}>
@@ -83,18 +105,32 @@ const PostList = () => {
 
             <SocialGroup>
               <SocialLink>
-                <img src={likeImg} alt="" onClick={() => like(val)} />
+                <img src={likeImg} alt="" title="Like" onClick={() => like(val)} />
                 {likesCount(val)}
               </SocialLink>
+
               <SocialLink>
-                <PostComment post={val} />
+                <img src={commentImg} alt="" title="Comment" onClick={comment} />
+                {commentsCount(val)}
               </SocialLink>
+
+              {(val.username === userName) ?
+                  <SocialLink>
+                    <img src={deleteImg} alt="" title="Delete" onClick={() => dispatch(removePost(val))} />
+                  </SocialLink>
+                  : ''}
             </SocialGroup>
+
+            <CommentGroup>
+              <PostComment
+                showComment={showComment}
+                post={val} />
+            </CommentGroup>
           </PostDiv>
         </li>
       )
     })
-  }, [dispatch, history, postList, userName])
+  }, [dispatch, history, postList, userName, showComment])
 
   return (
     <ul>

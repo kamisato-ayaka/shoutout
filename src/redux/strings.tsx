@@ -2,7 +2,9 @@ export const LOGIN_USER = "LOGIN_USER"
 export const LOGOUT_USER = "LOGOUT_USER"
 
 export const ADD_USER = "ADD_USER"
+
 export const ADD_POST = "ADD_POST"
+export const REMOVE_POST = "REMOVE_POST"
 
 export const GET_USER = "GET_USER"
 export const RESET_USER = "RESET_USER"

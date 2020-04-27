@@ -53,6 +53,13 @@ export const addPost = (newPost: PostVars) => {
     }
 }
 
+export const removePost = (newPost: PostVars) => {
+    return {
+        type: actionType.REMOVE_POST,
+        payload: newPost
+    }
+}
+
 
 export const getUser = (user: UsernameVar) => {
     return {

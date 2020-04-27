@@ -102,6 +102,14 @@ export const PostDiv = Styled.div`
     padding: 10px 20px;
     text-align: center;
 `
+export const ButtonPost = Styled(Button)`
+    float: right;
+    width: 85px !important;
+    margin-right: 23px;
+    margin: 10px;
+    cursor: pointer;
+    text-transform: capitalize !important; 
+`
 export const UserInfo = Styled.div`
     margin: 15px 0;
     font-family: 'Raleway';
@@ -138,7 +146,7 @@ export const FollowGroup = Styled.div`
 export const PostGroup = Styled.div`
     float: right;
     margin-top: 10px !important;
-    width: 390px;
+    width: 400px;
     word-wrap: break-word;
 `
 export const SocialGroup = Styled.div`
@@ -154,6 +162,45 @@ export const SocialText = Styled(P)`
 export const SocialLink = Styled.div`
     display: inline-block;
     cursor: pointer;
+`
+export const CommentList = Styled.li`
+    display: inline-block;
+    width: 460px;
+    list-style: none;
+`
+export const CommentGroup = Styled.div`
+    float: right;
+    margin-top: 10px !important;
+    width: 460px;
+    word-wrap: break-word;
+`
+export const CommentImg = Styled.div`
+    float: left;
+`
+export const CommentForm = Styled.div`
+    width: 410px;
+    word-wrap: break-word;
+    float: right;
+    border: .75px solid #d2d2d2;
+    border-radius: 14px;
+    margin: 5px 0;
+`
+export const CommentUser = Styled(P)`
+    cursor: pointer;
+    display: inline-block;
+`
+export const CommentPost = Styled.div`
+    float: right;
+    width: 390px;
+`
+export const CommentText = Styled(P)`
+    display: inline-block;
+    width: 360px;
+    word-wrap: break-word;
+`
+export const CommentButton = Styled.button`
+    cursor: pointer;
+    display: inline-block;
 `
 export const H1 = Styled.h1`
     margin-bottom: 5px;

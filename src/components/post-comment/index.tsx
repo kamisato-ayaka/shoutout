@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik'
@@ -6,8 +6,10 @@ import { PostCommentVars, CommentVars } from './types';
 import { PostVars, CommentVar } from '../main/dashboard/types';
 import { AppState } from '../../redux/types';
 import { addComment, removeComment, getUser } from '../../redux/actions';
-import { SocialText } from '../styles';
+import { CommentImg, CommentForm, CommentPost, UserText, UserLink, CommentText, CommentList, ButtonPost } from '../styles'
+
 const PostComment: React.FC<PostCommentVars> = ({
+  showComment,
   post
 }) => {
 
@@ -17,12 +19,10 @@ const PostComment: React.FC<PostCommentVars> = ({
   const userName = useSelector((state: AppState) => state.logUserReducer)
   const postList: PostVars[] = useSelector((state: AppState) => state.postReducer)
 
-  const [showComment, setShowComment] = useState<boolean>(false)
 
   const initialValues: Omit<CommentVars, "postID" | "usernameComment"> = {
     comment: ''
   }
-  const comment = () => setShowComment(true)
 
   const onSubmit = (values: Omit<CommentVars, "postID" | "usernameComment">, { resetForm }: any) => {
     const commentData = {
@@ -36,78 +36,76 @@ const PostComment: React.FC<PostCommentVars> = ({
     }
   }
 
-  const commentsCount = (post: PostVars) => {
-    const comments = postList.filter((val: PostVars) => val.id === post.id)
-    if (!comments) return []
-    return (
-      <>
-        {comments.map((val: PostVars) => {
-          return (
-            <SocialText key={val.id}>{val.comments.length}</SocialText>
-          )
-        })}
-      </>
-    )
-  }
-
   const commentList = useMemo(() => {
     const findComment = postList.find((val: PostVars) => val.id === post.id)
     if (!findComment) return []
+
+    const userImg = require('../../images/kristina.png');
 
     return (
       <ul>
         {findComment.comments.map((val: CommentVar, index: any) => {
           const toProfile = (val: CommentVar) => {
-            history.push("/profile")
+            history.push(`/${val.username}`)
             dispatch(getUser(val.username))
           }
 
           return (
-            <li key={index}>
-              <div onClick={() => toProfile(val)}><b>{val.username}</b> {val.comment}</div>
-              <button onClick={() => dispatch(removeComment(val))}>Delete</button>
-            </li>
+            <CommentList key={index}>
+              <UserLink onClick={() => toProfile(val)}>
+                <img src={userImg} alt=""></img>
+                <UserText>{val.username}</UserText>
+              </UserLink>
+              <CommentPost>
+                <CommentText>{val.comment}</CommentText>
+                {(val.username === userName) ? <ButtonPost onClick={() => dispatch(removeComment(val))}>Delete</ButtonPost> : ''}
+              </CommentPost>
+            </CommentList>
           )
         })}
       </ul>
     )
-  }, [post.id, postList, dispatch, history])
+  }, [post.id, postList, dispatch, history, userName])
 
-  const commentImg = require('../../images/comment.svg');
+  const userProfile = require('../../images/pual.png');
 
   return (
     <>
-      <img src={commentImg} alt="" onClick={comment} />
-      {commentsCount(post)}
       {!showComment ? ''
-        : <div className="comment">
+        :
+        <>
+          <CommentImg>
+            <img src={userProfile} alt=""></img>
+            <UserText>{userName}</UserText>
+          </CommentImg>
           <Formik
             initialValues={initialValues}
             onSubmit={onSubmit}>
             {
               formik => (
-                <>
+                <CommentForm>
                   <form onSubmit={formik.handleSubmit}>
                     <div>
-                      <input
-                        type="text"
+                      <textarea
+                        className="comment-field"
                         name="comment"
                         placeholder="Write your comment..."
                         value={formik.values.comment}
                         onBlur={formik.handleBlur}
                         onChange={formik.handleChange}
                       />
+                      <ButtonPost type="submit">Reply</ButtonPost>
                       {formik.touched.comment && formik.errors.comment ? (
                         <div>{formik.errors.comment}</div>
                       ) : null}
                     </div>
                   </form>
-                </>
+                </CommentForm>
               )
             }
           </Formik>
           {commentList}
-        </div>
+        </>
       }
 
     </>

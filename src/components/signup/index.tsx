@@ -49,6 +49,7 @@ const SignUp = () => {
     if (index === -1) {
       dispatch(addUser(newUser));
       resetForm();
+      history.push("/login")
 
     } else if (index > -1) {
       setInvalid(true)

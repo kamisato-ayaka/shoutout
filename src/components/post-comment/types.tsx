@@ -1,6 +1,7 @@
 import { PostVars } from "../main/dashboard/types";
 
 export type PostCommentVars = {
+    showComment: boolean,
     post: PostVars
 }
 
