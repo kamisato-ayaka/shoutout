@@ -102,7 +102,11 @@ export const PostDiv = Styled.div`
     padding: 10px 20px;
     text-align: center;
 `
-export const UserInfo = Styled(P)`
+export const UserInfo = Styled.div`
+    margin: 15px 0;
+    font-family: 'Raleway';
+    font-size: 12px;
+    color: #575757;
     text-align: center !important;
 `
 export const UserGroup = Styled(PostDiv)`

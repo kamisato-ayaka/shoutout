@@ -31,7 +31,7 @@ const UserProfile = () => {
         usernameOnline: userName // online user
       }
 
-      if (Number(index) === -1) {
+      if (Number(index) === -1 && userName !== '') {
         dispatch(followUser(followData))
 
       } else if (Number(index) > -1) {
@@ -41,9 +41,12 @@ const UserProfile = () => {
 
     const account = users.find((val: UserVars) => val.username === user)
 
+    const UserProfile = require('../../images/katrina-p.png');
+    
     return (
       <>
         <UserInfo>
+          <img src={UserProfile} alt=""></img>
           <H1>{user}</H1>
           <UserNameInfo>@{user}</UserNameInfo>
         </UserInfo>
@@ -73,7 +76,7 @@ const UserProfile = () => {
         usernameLike: userName
       }
 
-      if (index === -1) {
+      if (index === -1 && userName !== '') {
         dispatch(likePost(likeData))
       }
 
@@ -124,6 +127,7 @@ const UserProfile = () => {
                   <img src={likeImg} alt="" onClick={() => like(val)} />
                   {likesCount(val)}
                 </SocialLink>
+                
                 <SocialLink>
                   <PostComment post={val} />
                 </SocialLink>

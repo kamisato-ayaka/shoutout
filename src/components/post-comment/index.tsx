@@ -30,8 +30,10 @@ const PostComment: React.FC<PostCommentVars> = ({
       usernameComment: userName,
       comment: values.comment
     }
-    dispatch(addComment(commentData))
-    resetForm()
+    if (userName !== '') {
+      dispatch(addComment(commentData))
+      resetForm()
+    }
   }
 
   const commentsCount = (post: PostVars) => {
@@ -78,7 +80,7 @@ const PostComment: React.FC<PostCommentVars> = ({
       <img src={commentImg} alt="" onClick={comment} />
       {commentsCount(post)}
       {!showComment ? ''
-        : <>
+        : <div className="comment">
           <Formik
             initialValues={initialValues}
             onSubmit={onSubmit}>
@@ -105,7 +107,7 @@ const PostComment: React.FC<PostCommentVars> = ({
             }
           </Formik>
           {commentList}
-        </>
+        </div>
       }
 
     </>

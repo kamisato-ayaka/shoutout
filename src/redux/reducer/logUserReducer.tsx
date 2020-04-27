@@ -1,6 +1,6 @@
 import * as actionType from "../strings";
 
-const usernameData = localStorage.getItem("username");
+const usernameData = localStorage.getItem("loguser");
 const initUsername: string = usernameData == null ? '' : JSON.parse(usernameData);
 
 const reduce = (state: string = initUsername, action: any) => {
@@ -18,7 +18,7 @@ const reduce = (state: string = initUsername, action: any) => {
 
 const logUserReducer = (state: string = initUsername, action: any) => {
   const newState: string = reduce(state, action);
-  localStorage.setItem("username", JSON.stringify(newState));
+  localStorage.setItem("loguser", JSON.stringify(newState));
   return newState;
 }
 
