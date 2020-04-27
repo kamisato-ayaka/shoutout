@@ -6,7 +6,7 @@ import { PostCommentVars, CommentVars } from './types';
 import { PostVars, CommentVar } from '../main/dashboard/types';
 import { AppState } from '../../redux/types';
 import { addComment, removeComment, getUser } from '../../redux/actions';
-
+import { SocialText } from '../styles';
 const PostComment: React.FC<PostCommentVars> = ({
   post
 }) => {
@@ -41,7 +41,7 @@ const PostComment: React.FC<PostCommentVars> = ({
       <>
         {comments.map((val: PostVars) => {
           return (
-            <span key={val.id}>{val.comments.length}</span>
+            <SocialText key={val.id}>{val.comments.length}</SocialText>
           )
         })}
       </>
@@ -71,10 +71,11 @@ const PostComment: React.FC<PostCommentVars> = ({
     )
   }, [post.id, postList, dispatch, history])
 
+  const commentImg = require('../../images/comment.svg');
 
   return (
     <>
-      <button onClick={comment}>Comment</button>
+      <img src={commentImg} alt="" onClick={comment} />
       {commentsCount(post)}
       {!showComment ? ''
         : <>
@@ -103,7 +104,6 @@ const PostComment: React.FC<PostCommentVars> = ({
               )
             }
           </Formik>
-
           {commentList}
         </>
       }

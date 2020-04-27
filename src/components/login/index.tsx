@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux'
 import { loginUser } from '../../redux/actions'
@@ -9,11 +8,12 @@ import md5 from 'md5'
 import { LoginVars } from './types'
 import { UserVars } from '../signup/types'
 import { AppState } from '../../redux/types'
-
+import { FormDiv, Box, FormLogo, FormGroup, FormTextDiv, FormText, FormInvalid, ButtonDiv, Button, P, BoldP } from '../styles';
 
 const Login = () => {
   const dispatch = useDispatch()
   const history = useHistory()
+
   const userData: UserVars[] = useSelector((state: AppState) => state.signupReducer)
 
   const [invalid, setInvalid] = useState<boolean>(false)
@@ -32,7 +32,7 @@ const Login = () => {
     let loguser = values.username
     if (user > -1) {
       dispatch(loginUser(loguser))
-      history.replace("/dashboard")
+      history.push("/dashboard")
 
     } else if (user === -1) {
       setInvalid(true)
@@ -40,57 +40,73 @@ const Login = () => {
     }
   }
 
-  const signUp = () => setInvalid(false)
+  const signUp = () => {
+    history.push("/signup")
+    setInvalid(false)
+  }
+
+  const logo = require('../../images/logo-l.svg');
 
   return (
-    <>
-      <h1>Log In</h1>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        validateOnChange={false}
-        validateOnBlur={false}
-        onSubmit={onSubmit}>
-        {
-          formik => (
-            <>
-              <form onSubmit={formik.handleSubmit}>
-                <div>
-                  <input
-                    type="text"
-                    name="username"
-                    placeholder="Username"
-                    value={formik.values.username}
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                  />
-                  {formik.touched.username && formik.errors.username ? (
-                    <div>{formik.errors.username}</div>
-                  ) : null}
-                </div>
+    <FormDiv>
+      <Box>
+        <FormLogo>
+          <img src={logo} alt=""></img>
+        </FormLogo>
 
-                <div>
-                  <input
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    value={formik.values.password}
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                  />
-                  {formik.touched.password && formik.errors.password ? (
-                    <div>{formik.errors.password}</div>
-                  ) : null}
-                </div>
-                <button type="submit">Log In</button>
-              </form>
-            </>
-          )
-        }
-      </Formik>
-      {!invalid ? '' : <p className="message">Account doesn't exist.</p>}
-      <Link to="/signup"><button onClick={() => signUp()}>Sign Up</button></Link>
-    </>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          validateOnChange={false}
+          validateOnBlur={false}
+          onSubmit={onSubmit}>
+          {
+            formik => (
+              <>
+                <form onSubmit={formik.handleSubmit}>
+                  <FormGroup>
+                    <P>Username</P>
+                    <input
+                      type="input"
+                      className="form-field"
+                      name="username"
+                      value={formik.values.username}
+                      onBlur={formik.handleBlur}
+                      onChange={formik.handleChange}
+                    />
+                    {formik.touched.username && formik.errors.username ? (
+                      <FormInvalid>{formik.errors.username}</FormInvalid>
+                    ) : null}
+                  </FormGroup>
+
+                  <FormGroup>
+                    <P>Password</P>
+                    <input
+                      type="password"
+                      className="form-field"
+                      name="password"
+                      value={formik.values.password}
+                      onBlur={formik.handleBlur}
+                      onChange={formik.handleChange}
+                    />
+                    {formik.touched.password && formik.errors.password ? (
+                      <FormInvalid>{formik.errors.password}</FormInvalid>
+                    ) : null}
+                  </FormGroup>
+                  <ButtonDiv>
+                    <Button type="submit">Log In</Button>
+                  </ButtonDiv>
+                </form>
+              </>
+            )
+          }
+        </Formik>
+        {!invalid ? '' : <FormInvalid className="message">Account doesn't exist.</FormInvalid>}
+        <FormTextDiv>
+          <FormText onClick={() => signUp()}>Don't have an account? <BoldP>Sign Up</BoldP></FormText>
+        </FormTextDiv>
+      </Box >
+    </FormDiv>
   )
 }
 

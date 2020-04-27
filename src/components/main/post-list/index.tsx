@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { getUser, UsernameVar, likePost, unlikePost } from '../../../redux/actions'
 import { AppState } from '../../../redux/types'
 import PostComment from '../../post-comment'
+import { PostDiv, UserLink, UserText, PostGroup, SocialGroup, SocialText, SocialLink, P } from '../../styles';
 
 const PostList = () => {
   const dispatch = useDispatch()
@@ -52,7 +53,7 @@ const PostList = () => {
           <>
             {likes.map((val: PostVars) => {
               return (
-                <span key={val.id}>{val.likes.length}</span>
+                <SocialText key={val.id}>{val.likes.length}</SocialText>
               )
             })}
           </>
@@ -64,17 +65,32 @@ const PostList = () => {
         history.push(`/${user}`)
       }
 
+      const userImg = require('../../../images/kristina.png');
+      const likeImg = require('../../../images/like.svg');
+
       return (
         <li key={index}>
-          <div onClick={() => toProfile()}><b>{user}</b></div>
-          <div>{val.post}</div>
+          <PostDiv>
 
-          <div>
-            <button onClick={() => like(val)}>Like</button>
-            {likesCount(val)}
-          </div>
+            <UserLink onClick={() => toProfile()}>
+              <img src={userImg} alt=""></img>
+              <UserText>{user}</UserText>
+            </UserLink>
 
-          <PostComment post={val} />
+            <PostGroup>
+              <P>{val.post}</P>
+            </PostGroup>
+
+            <SocialGroup>
+              <SocialLink>
+                <img src={likeImg} alt="" onClick={() => like(val)} />
+                {likesCount(val)}
+              </SocialLink>
+              <SocialLink>
+                <PostComment post={val} />
+              </SocialLink>
+            </SocialGroup>
+          </PostDiv>
         </li>
       )
     })

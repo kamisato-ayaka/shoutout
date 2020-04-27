@@ -1,23 +1,26 @@
 import React from 'react'
+import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux'
-import { addPost } from '../../../redux/actions'
+import { addPost, getUser } from '../../../redux/actions'
 import { Formik } from 'formik'
 import { PostVars } from '../dashboard/types'
 import { AppState } from '../../../redux/types'
+import { PostDiv, UserLink, UserText } from '../../styles'
 
 const PostForm = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
+  const history = useHistory()
 
   const userName = useSelector((state: AppState) => state.logUserReducer)
-  const posts = useSelector((state:AppState) => state.postReducer)
+  const posts = useSelector((state: AppState) => state.postReducer)
 
-  const initialValues:  Omit<PostVars,"comments" | "likes"> = {
+  const initialValues: Omit<PostVars, "comments" | "likes"> = {
     id: 0,
     username: '',
     post: ''
   }
 
-  const onSubmit = (values: Omit<PostVars,"comments" | "likes">, { resetForm }: any) => {
+  const onSubmit = (values: Omit<PostVars, "comments" | "likes">, { resetForm }: any) => {
     const newPost = {
       id: Number((posts.length - 1) + 1),
       username: userName,
@@ -29,8 +32,19 @@ const PostForm = () => {
     resetForm()
   }
 
+  const toProfile = () => {
+    dispatch(getUser(userName))
+    history.push(`/${userName}`)
+  }
+
+  const userImg = require('../../../images/pual.png');
+
   return (
-    <>
+    <PostDiv>
+      <UserLink onClick={() => toProfile()}>
+        <img src={userImg} alt=""></img>
+        <UserText>{userName}</UserText>
+      </UserLink>
       <Formik
         initialValues={initialValues}
         onSubmit={onSubmit}>
@@ -39,8 +53,8 @@ const PostForm = () => {
             <>
               <form onSubmit={formik.handleSubmit}>
                 <div>
-                  <input
-                    type="text"
+                  <textarea
+                    className="post-field"
                     name="post"
                     placeholder="Post your shoutout!"
                     value={formik.values.post}
@@ -50,14 +64,13 @@ const PostForm = () => {
                   {formik.touched.post && formik.errors.post ? (
                     <div>{formik.errors.post}</div>
                   ) : null}
-                  <button type="submit">Post</button>
                 </div>
               </form>
             </>
           )
         }
       </Formik>
-    </>
+    </PostDiv>
   )
 }
 

@@ -5,6 +5,7 @@ import { getUser } from '../../../redux/actions'
 import { Formik } from 'formik'
 import { AppState } from '../../../redux/types'
 import { UserVars } from '../../signup/types'
+import { SearchDiv, FormInvalid } from '../../styles';
 
 export type SearchVar = {
   searchItem: string
@@ -39,30 +40,35 @@ const Search = () => {
 
   return (
     <>
-      <Formik
-        initialValues={initialValues}
-        onSubmit={onSubmit}>
-        {formik => (
-          <>
-            <form onSubmit={formik.handleSubmit}>
-              <div>
-                <input
-                  type="text"
-                  name="searchItem"
-                  placeholder="Search..."
-                  value={formik.values.searchItem}
-                  onBlur={formik.handleBlur}
-                  onChange={formik.handleChange}
-                />
-                {formik.touched.searchItem && formik.errors.searchItem ? (
-                  <div>{formik.errors.searchItem}</div>
-                ) : null}
-              </div>
-            </form>
-          </>
-        )}
-      </Formik>
-      {!invalid ? '' : <p className="message">No result(s) found</p>}
+      <SearchDiv>
+        <Formik
+          initialValues={initialValues}
+          onSubmit={onSubmit}>
+          {formik => (
+            <>
+              <form onSubmit={formik.handleSubmit}>
+                <div>
+                  <input
+                    type="text"
+                    className="search-field"
+                    name="searchItem"
+                    placeholder="Search..."
+                    value={formik.values.searchItem}
+                    onBlur={formik.handleBlur}
+                    onChange={formik.handleChange}
+                  />
+                  {formik.touched.searchItem && formik.errors.searchItem ? (
+                    <div>{formik.errors.searchItem}</div>
+                  ) : null}
+                </div>
+              </form>
+            </>
+          )}
+        </Formik>
+      </SearchDiv>
+      <div>
+        {!invalid ? '' : <FormInvalid>No result(s) found</FormInvalid>}
+      </div>
     </>
   )
 }

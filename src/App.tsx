@@ -12,30 +12,33 @@ import UserProfile from './components/user-profile';
 import { UsernameVar } from './redux/actions';
 import { useSelector } from 'react-redux';
 import { AppState } from './redux/types';
+import { Container } from './components/styles';
 
 const App = () => {
   const userName = useSelector((state: AppState) => state.logUserReducer)
   const user: UsernameVar = useSelector((state: AppState) => state.getUserReducer)
 
   return (
-    <div className="App">
-      <Router>
-        <Switch>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/signup">
-            <SignUp />
-          </Route>
-          <Route path="/dashboard">
-            <Dashboard />
-          </Route>
-          <Route path={`/${(user) || (userName)}`}>
-            <UserProfile />
-          </Route>
-        </Switch>
-      </Router>
-    </div>
+    <Container>
+      <div className="App">
+        <Router>
+          <Switch>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <Route path="/signup">
+              <SignUp />
+            </Route>
+            <Route path="/dashboard">
+              <Dashboard />
+            </Route>
+            <Route path={`/${(user) || (userName)}`}>
+              <UserProfile />
+            </Route>
+          </Switch>
+        </Router>
+      </div>
+    </Container>
   );
 }
 

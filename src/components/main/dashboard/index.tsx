@@ -1,46 +1,44 @@
 import React from 'react'
 import { Link } from "react-router-dom";
-import { useHistory } from "react-router-dom";
 import PostForm from '../post-form';
 import PostList from '../post-list';
 import Setting from '../setting';
-import { useSelector, useDispatch } from 'react-redux';
-import { getUser } from '../../../redux/actions';
+import { useSelector } from 'react-redux';
+
 import { AppState } from '../../../redux/types';
 import Search from '../search';
+import { Dboard, Header, Logo, Button, FormInvalid, H2Feed } from '../../styles';
 
 const Dashboard = () => {
-  const dispatch = useDispatch()
-  const history = useHistory()
 
   const userName = useSelector((state: AppState) => state.logUserReducer)
 
-  const toProfile = () => {
-    dispatch(getUser(userName))
-    history.push(`/${userName}`)
-
-  }
+  const logo = require('../../../images/logo-s.svg');
 
   return (
-    <>
-      <h1>Shoutout</h1>
+    <Dboard>
+      <Header>
+        <Logo>
+          <Link to="/dashboard"><img src={logo} alt=""></img></Link>
+        </Logo>
+        <Search />
+      </Header>
 
       {(userName === '') ?
         <>
-          <p>You must log in to view the page.</p>
-          <Link to="/login"><button>Login</button></Link>
-          <Link to="/signup"><button>Sign Up</button></Link>
+          <FormInvalid>You must log in to view the page.</FormInvalid>
+          <Link to="/login"><Button>Login</Button></Link>
+          <Link to="/signup"><Button>Sign Up</Button></Link>
         </> :
-        <>
-          <Link to="/dashboard"><h3>Home</h3></Link>
-          <p onClick={() => toProfile()}>Hi, {userName}</p>
-          <Search />
+        <div>
           <PostForm />
+
+          <H2Feed>Recent</H2Feed>
           <PostList />
           <Setting />
-        </>
+        </div>
       }
-    </>
+    </Dboard>
   )
 }
 

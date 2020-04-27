@@ -9,6 +9,7 @@ import { UserVars } from '../signup/types'
 import PostComment from '../post-comment'
 import Setting from '../main/setting';
 import Search from '../main/search';
+import { Dboard, PostDiv, PostGroup, P, UserGroup, UserLink, UserText, UserButton, Header, Logo, Button, FormInvalid, SocialGroup, SocialLink, SocialText, FollowGroup, H1User, H2, UserInfo, H1, UserNameInfo } from '../styles';
 
 const UserProfile = () => {
   const dispatch = useDispatch()
@@ -42,9 +43,23 @@ const UserProfile = () => {
 
     return (
       <>
-        <h1>{user}</h1>
-        <p>Followers {account?.followers.length} Following {account?.following.length}</p>
-        {(userName === user) ? '' : <button onClick={() => follow(account)}>Follow</button>}
+        <UserInfo>
+          <H1>{user}</H1>
+          <UserNameInfo>@{user}</UserNameInfo>
+        </UserInfo>
+
+        <UserGroup>
+          {(userName === user) ? <UserButton>Edit Profile</UserButton> : <UserButton onClick={() => follow(account)}>Follow</UserButton>}
+          <UserInfo>Lorem ipsum dolor sit amet. Mauris in mi vulputate. <br></br> Pellentesque eros nec, eleifend tellus. Curabitur maximus magna quis.</UserInfo>
+          <FollowGroup>
+            <H1User>{account?.followers.length}</H1User>
+            <H2>Followers</H2>
+          </FollowGroup>
+          <FollowGroup>
+            <H1User>{account?.following.length}</H1User>
+            <H2>Following</H2>
+          </FollowGroup>
+        </UserGroup>
       </>
     )
   }, [user, users, dispatch, userName])
@@ -74,7 +89,7 @@ const UserProfile = () => {
         <>
           {likes.map((val: PostVars) => {
             return (
-              <span key={val.id}>{val.likes.length}</span>
+              <SocialText key={val.id}>{val.likes.length}</SocialText>
             )
           })}
         </>
@@ -86,19 +101,35 @@ const UserProfile = () => {
       history.push(`/${user}`)
     }
 
+    const userImg = require('../../images/pual.png');
+    const likeImg = require('../../images/like.svg');
+
     return (
       <ul>
         {findUser.map((val: PostVars, index: any) =>
           <li key={index}>
-            <div onClick={() => toProfile()}><b>{val.username}</b></div>
-            <div>{val.post}</div>
+            <PostDiv>
 
-            <div>
-              <button onClick={() => like(val)}>Like</button>
-              {likesCount(val)}
-            </div>
+              <UserLink onClick={() => toProfile()}>
+                <img src={userImg} alt=""></img>
+                <UserText>{val.username}</UserText>
+              </UserLink>
 
-            <PostComment post={val} />
+              <PostGroup>
+                <P>{val.post}</P>
+              </PostGroup>
+
+              <SocialGroup>
+                <SocialLink>
+                  <img src={likeImg} alt="" onClick={() => like(val)} />
+                  {likesCount(val)}
+                </SocialLink>
+                <SocialLink>
+                  <PostComment post={val} />
+                </SocialLink>
+              </SocialGroup>
+
+            </PostDiv>
           </li>)}
       </ul>
     )
@@ -107,22 +138,26 @@ const UserProfile = () => {
   const security = useMemo(() => {
     return (
       <>
-        <p>You must log in to view the page.</p>
-        <Link to="/login"><button>Login</button></Link>
-        <Link to="/signup"><button>Sign Up</button></Link>
+        <FormInvalid>You must log in to view the page.</FormInvalid>
+        <Link to="/login"><Button>Log In</Button></Link>
+        <Link to="/signup"><Button>Sign Up</Button></Link>
       </>
     )
   }, [])
 
+  const logo = require('../../images/logo-s.svg');
   return (
-    <>
-      <h1>Shoutout</h1>
+    <Dboard>
+      <Header>
+        <Logo>
+          <Link to="/dashboard"><img src={logo} alt=""></img></Link>
+        </Logo>
+        <Search />
+      </Header>
       {(user === '') ?
         <>{security}
         </> :
         <>
-          <Link to="/dashboard"><h3>Home</h3></Link>
-          <Search />
           {userAccount}
           {userPost}
 
@@ -130,7 +165,7 @@ const UserProfile = () => {
             <>{security}</> : <Setting />}
         </>
       }
-    </>
+    </Dboard>
   )
 }
 
