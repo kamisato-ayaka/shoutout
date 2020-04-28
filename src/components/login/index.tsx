@@ -8,7 +8,19 @@ import md5 from 'md5'
 import { LoginVars } from './types'
 import { UserVars } from '../signup/types'
 import { AppState } from '../../redux/types'
-import { FormDiv, Box, FormLogo, FormGroup, FormTextDiv, FormText, FormInvalid, ButtonDiv, Button, P, BoldP } from '../styles';
+import {
+  FormDiv,
+  Box,
+  FormLogo,
+  FormGroup,
+  FormTextDiv,
+  FormText,
+  FormInvalid,
+  ButtonDiv,
+  Button,
+  P,
+  BoldP
+} from '../styles';
 
 const Login = () => {
   const dispatch = useDispatch()
@@ -30,6 +42,7 @@ const Login = () => {
   const onSubmit = (values: LoginVars, { resetForm }: any) => {
     const user = userData.findIndex((val: UserVars) => val.username === values.username && val.password === md5(values.password))
     let loguser = values.username
+    
     if (user > -1) {
       dispatch(loginUser(loguser))
       history.push("/dashboard")

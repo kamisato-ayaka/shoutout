@@ -27,7 +27,7 @@ const PostList = () => {
   );
 
   const [showComment, setShowComment] = useState<boolean>(false)
-  
+
   const userPost = useMemo(() => {
 
     const like = (post: PostVars) => {
