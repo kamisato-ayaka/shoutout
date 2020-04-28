@@ -24,10 +24,25 @@ const UserProfile = () => {
 
   const findUser: PostVars[] = postList.filter((val: PostVars) => val.username === user)
 
+  const status = useMemo(() => {
+    const account = users.find((val: UserVars) => val.username === user)
+    const index = account?.followers.findIndex((val: string) => val === userName)
+    if (Number(index) === -1 && userName !== '') {
+      return 'Follow'
+
+    } else if (Number(index) > -1) {
+      return 'Unfollow'
+    }
+
+  }, [user, userName, users])
+
   const userAccount = useMemo(() => {
 
-    const follow = (account: UserVars | undefined) => {
+    const account = users.find((val: UserVars) => val.username === user)
+
+    const follow = () => {
       const index = account?.followers.findIndex((val: string) => val === userName)
+
       const followData = {
         usernameToFollow: user, // account user
         usernameOnline: userName // online user
@@ -41,8 +56,6 @@ const UserProfile = () => {
       }
     }
 
-    const account = users.find((val: UserVars) => val.username === user)
-
     const UserProfile = require('../../images/katrina-p.png');
 
     return (
@@ -54,10 +67,7 @@ const UserProfile = () => {
         </UserInfo>
 
         <UserGroup>
-          {(userName === user)
-            ? <UserButton>Edit Profile</UserButton>
-            : <UserButton onClick={() => follow(account)}>Follow</UserButton>
-          }
+          {(userName === user) ? <UserButton>Edit Profile</UserButton> : <UserButton onClick={follow}>{status}</UserButton>}
           <UserInfo>Lorem ipsum dolor sit amet. Mauris in mi vulputate. <br></br> Pellentesque eros nec, eleifend tellus. Curabitur maximus magna quis.</UserInfo>
           <FollowGroup>
             <H1User>{account?.followers.length}</H1User>
@@ -70,7 +80,7 @@ const UserProfile = () => {
         </UserGroup>
       </>
     )
-  }, [user, users, dispatch, userName])
+  }, [user, users, dispatch, userName, status])
 
   const userPost = useMemo(() => {
 

@@ -58,14 +58,14 @@ const PostComment: React.FC<PostCommentVars> = ({
               </UserLink>
               <CommentPost>
                 <CommentText>{val.comment}</CommentText>
-                {(val.username === userName) ? <ButtonPost onClick={() => dispatch(removeComment(val))}>Delete</ButtonPost> : ''}
+                {(val.username === userName || post.username === userName ) ? <ButtonPost onClick={() => dispatch(removeComment(val))}>Delete</ButtonPost> : ''}
               </CommentPost>
             </CommentList>
           )
         })}
       </ul>
     )
-  }, [post.id, postList, dispatch, history, userName])
+  }, [post.id, postList, dispatch, history, userName, post.username])
 
   const userProfile = require('../../images/pual.png');
 

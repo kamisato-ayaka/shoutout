@@ -18,8 +18,7 @@ const PostList = () => {
         value.followers.findIndex((follower) => follower === userName) > -1
     )
   );
-  console.log(following);
-  
+
   const postList: PostVars[] = useSelector((state: AppState) =>
     state.postReducer.filter(
       (post) =>
@@ -28,7 +27,7 @@ const PostList = () => {
   );
 
   const [showComment, setShowComment] = useState<boolean>(false)
-
+  
   const userPost = useMemo(() => {
 
     const like = (post: PostVars) => {
@@ -115,10 +114,10 @@ const PostList = () => {
               </SocialLink>
 
               {(val.username === userName) ?
-                  <SocialLink>
-                    <img src={deleteImg} alt="" title="Delete" onClick={() => dispatch(removePost(val))} />
-                  </SocialLink>
-                  : ''}
+                <SocialLink>
+                  <img src={deleteImg} alt="" title="Delete" onClick={() => dispatch(removePost(val))} />
+                </SocialLink>
+                : ''}
             </SocialGroup>
 
             <CommentGroup>
