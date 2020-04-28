@@ -1,24 +1,31 @@
 import React, { useMemo } from 'react';
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
+import { addComment, removeComment, getUser } from '../../redux/actions';
 import { Formik } from 'formik'
+import { AppState } from '../../redux/types';
 import { PostCommentVars, CommentVars } from './types';
 import { PostVars, CommentVar } from '../main/dashboard/types';
-import { AppState } from '../../redux/types';
-import { addComment, removeComment, getUser } from '../../redux/actions';
-import { CommentImg, CommentForm, CommentPost, UserText, UserLink, CommentText, CommentList, ButtonPost } from '../styles'
+import {
+  CommentImg,
+  CommentForm,
+  CommentPost,
+  UserText,
+  UserLink,
+  CommentText,
+  CommentList,
+  ButtonPost
+} from '../styles'
 
 const PostComment: React.FC<PostCommentVars> = ({
   showComment,
   post
 }) => {
-
   const dispatch = useDispatch()
   const history = useHistory()
 
   const userName = useSelector((state: AppState) => state.logUserReducer)
   const postList: PostVars[] = useSelector((state: AppState) => state.postReducer)
-
 
   const initialValues: Omit<CommentVars, "postID" | "usernameComment"> = {
     comment: ''
@@ -30,6 +37,7 @@ const PostComment: React.FC<PostCommentVars> = ({
       usernameComment: userName,
       comment: values.comment
     }
+
     if (userName !== '') {
       dispatch(addComment(commentData))
       resetForm()
@@ -58,7 +66,7 @@ const PostComment: React.FC<PostCommentVars> = ({
               </UserLink>
               <CommentPost>
                 <CommentText>{val.comment}</CommentText>
-                {(val.username === userName || post.username === userName ) ? <ButtonPost onClick={() => dispatch(removeComment(val))}>Delete</ButtonPost> : ''}
+                {(val.username === userName || post.username === userName) ? <ButtonPost onClick={() => dispatch(removeComment(val))}>Delete</ButtonPost> : ''}
               </CommentPost>
             </CommentList>
           )
@@ -71,13 +79,13 @@ const PostComment: React.FC<PostCommentVars> = ({
 
   return (
     <>
-      {!showComment ? ''
-        :
+      {!showComment ? '' :
         <>
           <CommentImg>
             <img src={userProfile} alt=""></img>
             <UserText>{userName}</UserText>
           </CommentImg>
+
           <Formik
             initialValues={initialValues}
             onSubmit={onSubmit}>
@@ -94,7 +102,8 @@ const PostComment: React.FC<PostCommentVars> = ({
                         onBlur={formik.handleBlur}
                         onChange={formik.handleChange}
                       />
-                      <ButtonPost type="submit">Reply</ButtonPost>
+                      {(formik.values.comment !== '') ? <ButtonPost type="submit">Reply</ButtonPost> : ''}
+                      
                       {formik.touched.comment && formik.errors.comment ? (
                         <div>{formik.errors.comment}</div>
                       ) : null}
@@ -107,7 +116,6 @@ const PostComment: React.FC<PostCommentVars> = ({
           {commentList}
         </>
       }
-
     </>
   )
 }

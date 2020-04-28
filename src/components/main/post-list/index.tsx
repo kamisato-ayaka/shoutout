@@ -1,11 +1,21 @@
 import React, { useState, useMemo } from 'react'
 import { useHistory } from "react-router-dom";
-import { PostVars } from '../dashboard/types'
 import { useSelector, useDispatch } from 'react-redux'
 import { getUser, UsernameVar, likePost, unlikePost, removePost } from '../../../redux/actions'
 import { AppState } from '../../../redux/types'
+import { PostVars } from '../dashboard/types'
 import PostComment from '../../post-comment'
-import { PostDiv, UserLink, UserText, PostGroup, SocialGroup, SocialText, SocialLink, P, CommentGroup } from '../../styles';
+import {
+  PostDiv,
+  UserLink,
+  UserText,
+  PostGroup,
+  SocialGroup,
+  SocialText,
+  SocialLink,
+  P,
+  CommentGroup
+} from '../../styles';
 
 const PostList = () => {
   const dispatch = useDispatch()

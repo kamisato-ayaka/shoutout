@@ -2,14 +2,37 @@ import React, { useState, useMemo } from 'react'
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'
-import { PostVars } from '../main/dashboard/types'
 import { UsernameVar, followUser, unfollowUser, getUser, likePost, unlikePost, removePost } from '../../redux/actions'
 import { AppState } from '../../redux/types'
+import { PostVars } from '../main/dashboard/types'
 import { UserVars } from '../signup/types'
+import Search from '../main/search';
 import PostComment from '../post-comment'
 import Setting from '../main/setting';
-import Search from '../main/search';
-import { Dboard, PostDiv, PostGroup, P, UserGroup, UserLink, UserText, UserButton, Header, Logo, Button, FormInvalid, SocialGroup, SocialLink, SocialText, FollowGroup, H1User, H2, UserInfo, H1, UserNameInfo, CommentGroup } from '../styles';
+import {
+  Dboard,
+  PostDiv,
+  PostGroup,
+  P,
+  UserGroup,
+  UserLink,
+  UserText,
+  UserButton,
+  Header,
+  Logo,
+  Button,
+  FormInvalid,
+  SocialGroup,
+  SocialLink,
+  SocialText,
+  FollowGroup,
+  H1User,
+  H2,
+  UserInfo,
+  H1,
+  UserNameInfo,
+  CommentGroup
+} from '../styles';
 
 const UserProfile = () => {
   const dispatch = useDispatch()
@@ -27,6 +50,7 @@ const UserProfile = () => {
   const status = useMemo(() => {
     const account = users.find((val: UserVars) => val.username === user)
     const index = account?.followers.findIndex((val: string) => val === userName)
+    
     if (Number(index) === -1 && userName !== '') {
       return 'Follow'
 
@@ -37,7 +61,6 @@ const UserProfile = () => {
   }, [user, userName, users])
 
   const userAccount = useMemo(() => {
-
     const account = users.find((val: UserVars) => val.username === user)
 
     const follow = () => {
@@ -69,10 +92,12 @@ const UserProfile = () => {
         <UserGroup>
           {(userName === user) ? <UserButton>Edit Profile</UserButton> : <UserButton onClick={follow}>{status}</UserButton>}
           <UserInfo>Lorem ipsum dolor sit amet. Mauris in mi vulputate. <br></br> Pellentesque eros nec, eleifend tellus. Curabitur maximus magna quis.</UserInfo>
+          
           <FollowGroup>
             <H1User>{account?.followers.length}</H1User>
             <H2>Followers</H2>
           </FollowGroup>
+
           <FollowGroup>
             <H1User>{Number(account?.following.length) - 1}</H1User>
             <H2>Following</H2>
@@ -83,9 +108,9 @@ const UserProfile = () => {
   }, [user, users, dispatch, userName, status])
 
   const userPost = useMemo(() => {
-
     const like = (post: PostVars) => {
       const index = post.likes.findIndex((val: string) => val === userName)
+
       const likeData = {
         postID: post.id,
         usernameLike: userName
@@ -103,6 +128,7 @@ const UserProfile = () => {
     const likesCount = (post: PostVars) => {
       const likes = postList.filter((val: PostVars) => val.id === post.id)
       if (!likes) return []
+
       return (
         <>
           {likes.map((val: PostVars) => {
@@ -177,8 +203,6 @@ const UserProfile = () => {
                   showComment={showComment}
                   post={val} />
               </CommentGroup>
-
-
             </PostDiv>
           </li>)}
       </ul>
@@ -204,6 +228,7 @@ const UserProfile = () => {
         </Logo>
         <Search />
       </Header>
+      
       {(user === '') ?
         <>{security}
         </> :

@@ -5,7 +5,12 @@ import { addPost, getUser } from '../../../redux/actions'
 import { Formik } from 'formik'
 import { PostVars } from '../dashboard/types'
 import { AppState } from '../../../redux/types'
-import { PostDiv, UserLink, UserText, ButtonPost } from '../../styles'
+import {
+  PostDiv,
+  UserLink,
+  UserText,
+  ButtonPost
+} from '../../styles'
 
 const PostForm = () => {
   const dispatch = useDispatch()
@@ -45,29 +50,25 @@ const PostForm = () => {
         <img src={userImg} alt=""></img>
         <UserText>{userName}</UserText>
       </UserLink>
+
       <Formik
         initialValues={initialValues}
         onSubmit={onSubmit}>
         {
           formik => (
-            <>
-              <form onSubmit={formik.handleSubmit}>
-                <div>
-                  <textarea
-                    className="post-field"
-                    name="post"
-                    placeholder="Post your shoutout!"
-                    value={formik.values.post}
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                  />
-                  <ButtonPost type="submit">Shoutout</ButtonPost>
-                  {formik.touched.post && formik.errors.post ? (
-                    <div>{formik.errors.post}</div>
-                  ) : null}
-                </div>
-              </form>
-            </>
+            <form onSubmit={formik.handleSubmit}>
+              <div>
+                <textarea
+                  className="post-field"
+                  name="post"
+                  placeholder="Post your shoutout!"
+                  value={formik.values.post}
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                />
+                {(formik.values.post !== '') ? <ButtonPost type="submit">Shoutout</ButtonPost> : ''}
+              </div>
+            </form>
           )
         }
       </Formik>

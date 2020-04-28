@@ -7,7 +7,19 @@ import { Formik } from 'formik'
 import md5 from 'md5';
 import { UserVars } from './types';
 import { AppState } from '../../redux/types';
-import { FormDiv, Box, FormLogo, FormGroup, FormText, FormInvalid, ButtonDiv, Button, P, BoldP, FormTextDiv} from '../styles';
+import {
+  FormDiv,
+  Box,
+  FormLogo,
+  FormGroup,
+  FormText,
+  FormInvalid,
+  ButtonDiv,
+  Button,
+  P,
+  BoldP,
+  FormTextDiv
+} from '../styles';
 
 const SignUp = () => {
   const dispatch = useDispatch();
@@ -46,6 +58,7 @@ const SignUp = () => {
     }
 
     const index = userData.findIndex((val: UserVars) => val.username === values.username);
+
     if (index === -1) {
       dispatch(addUser(newUser));
       resetForm();
@@ -128,6 +141,7 @@ const SignUp = () => {
           )}
         </Formik>
         {!invalid ? '' : <FormInvalid className="message">Account already exist.</FormInvalid>}
+        
         <FormTextDiv>
           <FormText onClick={() => logIn()}>Already have an account? <BoldP>Log In</BoldP></FormText>
         </FormTextDiv>

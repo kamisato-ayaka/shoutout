@@ -5,9 +5,9 @@ import { loginUser } from '../../redux/actions'
 import * as Yup from 'yup'
 import { Formik } from 'formik'
 import md5 from 'md5'
+import { AppState } from '../../redux/types'
 import { LoginVars } from './types'
 import { UserVars } from '../signup/types'
-import { AppState } from '../../redux/types'
 import {
   FormDiv,
   Box,
